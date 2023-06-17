@@ -19,6 +19,11 @@ body {
 
 
 }
+.boardContent {
+ display: flex;
+}
+
+
 
 .boardHeader h1 {
     font-size: 61px;
@@ -79,7 +84,7 @@ input::-webkit-search-cancel-button {
 }
 
 .headings {
-
+    flex-grow: 1;
     display: flex;
     padding-right: 35px;
     padding-left: 100px;
@@ -92,26 +97,25 @@ input::-webkit-search-cancel-button {
 
 .boardSubsections {
 
-    min-height: 55vh;
     width: 25%;
     display: flex;
     flex-direction: column;
     align-items: space-between;
     margin-right: 30px;
     font-size: 21px;
+    height:100%
 }
 
 .boardSubsection {
 
-    min-height: 55vh;
+    flex-grow: 1;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: space-between;
     margin-right: 30px;
     font-size: 21px;
-    gap:30px
-
+    gap: 30px
 }
 
 
@@ -589,6 +593,7 @@ label:hover {
         height: 40px;
         width: 38%
     }
+
     .editDelete {
         margin-bottom: 40%
     }
@@ -613,7 +618,7 @@ label:hover {
 
 
     h1 {
-        text-align:left !important;
+        text-align: left !important;
     }
 
     .wrapper {
@@ -662,7 +667,8 @@ label:hover {
         width: 100%;
         min-height: fit-content;
         align-items: center;
-        padding: 10px
+        padding: 10px;
+        height:fit-content
     }
 
     .boardSubsection {
@@ -760,21 +766,22 @@ label:hover {
         top: 2%;
         height: 15px
     }
-   
+
 }
 
 @media(min-width:350px) and (max-width:700px) {
     .closeButtondialogFullCard {
         top: 3%;
-        right:-30px;
+        right: -30px;
         height: 20px
     }
 
     .wrapperDialog {
         margin-top: 10px;
     }
+
     .boardEditTaskForm {
-      
+
         margin-bottom: 90px;
         margin-top: 100px;
     }
@@ -788,7 +795,7 @@ label:hover {
 
     .dropdownForMobileDevices {
         display: none;
-    
+
     }
 
     .headerForSelectionField {

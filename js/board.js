@@ -241,7 +241,7 @@ function closeTask() {
 }
 
 
-async function countTasks(i, j) {
+async function countSubtasks(i, j) {
     tasks = JSON.parse(await backend.getItem('tasks'))
     let addedSubtaskCheckboxes = document.getElementsByClassName('addedSubtaskOnEdit')
 

@@ -105,7 +105,7 @@ input {
 .priorities {
     display: flex;
     flex-direction: row;
-    width: auto;
+    width: fit-content;
     margin-bottom: 0 !important;
 }
 
@@ -151,6 +151,7 @@ input {
 
 
 }
+
 .dropdownAssigned {
     position: relative;
     display: inline-block;
@@ -224,7 +225,7 @@ input {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
+    margin: 0
 }
 
 .colorPickerAssigned {
@@ -264,6 +265,12 @@ hr {
     justify-content: space-between;
     align-items: center;
 
+
+}
+
+.fillRequired {
+    border: red 2px solid;
+    border-radius: 10px;
 
 }
 
@@ -489,6 +496,7 @@ hr {
     .dropdown {
         width: 88%
     }
+
     .dropdownAssigned {
         width: 88%
     }
@@ -598,6 +606,7 @@ hr {
     .dropdown {
         width: 70%
     }
+
     .dropdownAssigned {
         width: 70%
     }
@@ -707,6 +716,7 @@ hr {
     .dropdown {
         width: 70%
     }
+
     .dropdownAssigned {
         width: 70%
     }

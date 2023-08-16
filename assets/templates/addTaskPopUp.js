@@ -45,14 +45,15 @@ async function addToTasks() {
         assignedTo,
         pace: 0
     };
-
-    clearValuesOfAddTask(title, description, category, assignedTo, date)
-    tasks.push(task);
-    disableButtonAddTask()
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    popTheAddedDesk()
+    if (task.prio && task.category) {
+        clearValuesOfAddTask(title, description, category, assignedTo, date)
+        tasks.push(task);
+        disableButtonAddTask()
+        await backend.setItem('tasks', JSON.stringify(tasks))
+        popTheAddedDesk()
+        setTimeout(function () { window.location.href = 'board.html'; }, 3000)
+    }
 }
-
 
 function addSubtaskOnPopUp() {
     let subtask = document.getElementById('subtaskPopUp');

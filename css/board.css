@@ -19,8 +19,9 @@ body {
 
 
 }
+
 .boardContent {
- display: flex;
+    display: flex;
 }
 
 
@@ -103,7 +104,7 @@ input::-webkit-search-cancel-button {
     align-items: space-between;
     margin-right: 30px;
     font-size: 21px;
-    height:100%
+    height: 100%
 }
 
 .boardSubsection {
@@ -465,14 +466,15 @@ textarea {
 .dropdownEditTask {
     position: relative;
     display: inline-block;
-    width: 50%;
+    width: 86%;
     height: 20px;
     border-radius: 10px;
     background-color: #ffffff;
     padding: 13px;
     color: #000000;
     border: 1px solid #D1D1D1;
-    margin-bottom: 0 !important;
+    /*     margin-bottom: 0 !important; */
+
 }
 
 .dropdownEditTask:hover .dropdown-content {
@@ -487,11 +489,9 @@ textarea {
 
 
 .okButtonDiv {
-
     width: 86%;
     display: flex;
     align-items: end;
-
 }
 
 .okButton {
@@ -502,6 +502,7 @@ textarea {
     border-radius: 10px;
     background-color: #2A3647;
     color: white;
+    margin-bottom: 5%;
 }
 
 .okButton:hover {
@@ -550,10 +551,6 @@ textarea {
     font-weight: lighter !important;
 }
 
-.dropdownEditTask {
-    width: 83%
-}
-
 .dropdownForMobileDevices {
     display: none;
     position: relative;
@@ -577,23 +574,19 @@ textarea {
     border-radius: 10px;
     z-index: 1;
     padding: 10px;
-    overflow-y: scroll;
     z-index: 200;
+    box-shadow: 5px 5px 15px 5px #000000;
 }
 
 label:hover {
     cursor: pointer;
 }
 
-
+.headerForSelectionField {
+    display: block !important;
+}
 
 @media(min-width:250px) and (max-width:1000px) {
-
-    .priorityImgFullCard {
-        height: 40px;
-        width: 38%
-    }
-
     .editDelete {
         margin-bottom: 40%
     }
@@ -668,7 +661,7 @@ label:hover {
         min-height: fit-content;
         align-items: center;
         padding: 10px;
-        height:fit-content
+        height: fit-content
     }
 
     .boardSubsection {
@@ -767,6 +760,12 @@ label:hover {
         height: 15px
     }
 
+    .priorityImgFullCard {
+        height: 40px;
+        width: 90%
+    }
+
+
 }
 
 @media(min-width:350px) and (max-width:700px) {
@@ -774,6 +773,10 @@ label:hover {
         top: 3%;
         right: -30px;
         height: 20px
+    }
+
+    .categoryDialog {
+        margin-top: 45px;
     }
 
     .wrapperDialog {
@@ -798,14 +801,29 @@ label:hover {
 
     }
 
+    .droppedContacts input {
+        left: 95% !important;
+    }
+
+
     .headerForSelectionField {
         display: block !important;
         width: 100%
+    }
+
+    .priorityImgFullCard {
+        height: 40px;
+        width: 50%
     }
 }
 
 @media(max-width:600px) {
     .dropdownForMobileDevices {
         display: block;
+    }
+
+    .priorityImgFullCard {
+        height: 40px;
+        width: 40%
     }
 }

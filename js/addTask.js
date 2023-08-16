@@ -2,7 +2,7 @@ let tasks = []
 let assignedContacts = []
 let prios = []
 let categories = []
-let colorsCategory = []
+let colorsCategory
 let prioImages = ['./assets/img/urgent.png', './assets/img/medium.png', './assets/img/low.png']
 let prioImagesFullCard = ['./assets/img/urgentOnclick.png', './assets/img/mediumOnclick.png', './assets/img/lowOnclick.png']
 let tasksToEdit = []
@@ -12,7 +12,9 @@ let colorOfBar
 let checkboxState;
 let checkedInput
 let date = new Date();
-
+let displayedCategories = [];
+let existingCategoryToAddToTask
+let existingColorCategoryToAddToTask
 
 async function initAddTask() {
     initScript();
@@ -22,6 +24,7 @@ async function initAddTask() {
         tasks = await JSON.parse(await backend.getItem('tasks')) || []
         contacts = JSON.parse(backend.getItem('contacts')) || [];
         document.getElementById("date").setAttribute("min", date.toISOString().split("T")[0])
+        displayExistingCategories()
         contactList()
     } catch (er) {
         console.error(er)
@@ -29,6 +32,7 @@ async function initAddTask() {
 }
 
 
+/**controlls the addTaskButton */
 function disableButtonAddTask() {
     let button = document.getElementById('addTaskButton')
     button.disabled = true;
@@ -40,7 +44,6 @@ function disableButtonAddTask() {
 
 
 async function addToTasks() {
-
     let title = document.getElementById('task');
     let description = document.getElementById('description');
     let date = document.getElementById('date');
@@ -48,14 +51,10 @@ async function addToTasks() {
     let category = document.getElementById('selectedCategoryInputValue');
     let assignedTo = assignedContacts.splice(0, assignedContacts.length)
     let prio = prios.slice(0).toString()
-    let colorCategory = colorsCategory.slice(0).toString()
-
 
     let task = {
         title: title.value,
         description: description.value,
-        category: category.value,
-        colorCategory,
         assignedTo: assignedTo.value,
         date: date.value,
         prio,
@@ -64,12 +63,54 @@ async function addToTasks() {
         assignedTo,
         pace: 0
     };
+    manageCategories(task, category, colorsCategory)
+    await whenAllRequiredFilled(task)
+}
 
-    
-    tasks.push(task);
-    disableButtonAddTask()
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    popTheAddedDesk()
+
+/**checks if task.prio && task.category are filled, pushes the task, inables the button,saves it on server */
+async function whenAllRequiredFilled(task) {
+    if (task.prio && task.category) {
+        tasks.push(task);
+        disableButtonAddTask()
+        await backend.setItem('tasks', JSON.stringify(tasks))
+        popTheAddedDesk()
+        setTimeout(function () { window.location.href = 'board.html'; }, 3000)
+    } else if (!task.prio) {
+        signalRequiredPriorities()
+    } else if (!task.category || task.category == undefined) {
+        signalRequiredCategory()
+    }
+}
+
+
+/**checks if a new or existing  category and colorsCategory will be added*/
+function manageCategories(task, category, colorsCategory) {
+    if (category.value && colorsCategory.length > 0) {
+        task.category = category.value
+        task.colorCategory = colorsCategory.slice(0).toString()
+    } else {
+        task.category = existingCategoryToAddToTask
+        task.colorCategory = existingColorCategoryToAddToTask
+    }
+}
+
+
+/** draws red border if required priority not set*/
+function signalRequiredPriorities() {
+    document.getElementById('priorities').classList.add('fillRequired')
+    setTimeout(() => {
+        document.getElementById('priorities').classList.remove('fillRequired')
+    }, 1000);
+}
+
+
+/** draws red border if required category not set*/
+function signalRequiredCategory() {
+    document.getElementById('categoryDropdown').classList.add('fillRequired')
+    setTimeout(() => {
+        document.getElementById('categoryDropdown').classList.remove('fillRequired')
+    }, 1000);
 }
 
 
@@ -83,6 +124,7 @@ function clearValuesOfAddTask(title, description, category, assignedTo, date) {
 }
 
 
+/**gets attribute from HTML element and according to that prepares priority to be added to task  */
 function addPriority(i) {
     let selectedPriority = document.getElementById("prio" + i);
     let selectedUrgency = selectedPriority.getAttribute("value")
@@ -97,6 +139,7 @@ function addPriority(i) {
 }
 
 
+/**checks selectedUrgency parameter and colors the corresponding image */
 function colorPrios(selectedUrgency, i) {
     if (selectedUrgency == 'urgent') {
         document.getElementById("prio" + i).src = "./assets/img/urgentOnclick.png";
@@ -117,6 +160,7 @@ function colorPrios(selectedUrgency, i) {
 }
 
 
+/**pushes value of subtask to subtasksToSave*/
 function addSubtask() {
     let subtask = document.getElementById('subtask');
     if (subtask.value) {
@@ -130,6 +174,7 @@ function addSubtask() {
 }
 
 
+/**removes subtasks */
 function deleteSubtask(i) {
     subtasksToSave.splice(i, 1)
     renderSubtasksOnAddTask()
@@ -137,12 +182,10 @@ function deleteSubtask(i) {
 
 
 async function deleteTask(i) {
-
     tasks.splice(i, 1);
     await backend.setItem('tasks', JSON.stringify(tasks))
     renderTaskCards();
     document.getElementById('dialogFullCard').classList.add('displayNone')
-
 }
 
 
@@ -167,16 +210,12 @@ function addCategoryOnTask() {
 }
 
 
+/**adds color to category*/
 function addCategoryColorOnTask(i) {
     let value = document.getElementById('selectedCategoryInputValue').value;
     if (value) {
         let color = document.getElementById("color" + i).style.backgroundColor
-        if (colorsCategory.length == 0) {
-            colorsCategory.push(color)
-        } else {
-            colorsCategory = []
-            colorsCategory.push(color)
-        }
+        colorsCategory = color
         addCategoryOnTask()
     }
 }
@@ -185,12 +224,13 @@ function addCategoryColorOnTask(i) {
 function openInputAddContact() {
     document.getElementById('hiddenInputAddContact').classList.remove('displayNone')
     document.getElementById('dropdownAddContact').style = 'display:none'
-  
+
 }
 
 
+/**pushes to assigned contacts if not added befor,otherwise splices contact onclick*/
 function addToAssignedContacts(index) {
-    if (index >= 0 && index < contacts.length) {
+    if (index < contacts.length) {
         let contact = contacts[index];
         contact.id = 1
         if (!assignedContacts.includes(contact)) {
@@ -214,6 +254,7 @@ function closeHiddenInput() {
 }
 
 
+/**renders subtasks from subtasksToSave */
 function renderSubtasksOnAddTask() {
     document.getElementById('subtasksOnAddTask').innerHTML = ''
     subtasksToSave.forEach((subtask, index) => {
@@ -224,12 +265,45 @@ function renderSubtasksOnAddTask() {
 }
 
 
+/**iterates through contacts */
 function contactList() {
     let dropdownAddContact = document.getElementById('dropdownAddContact');
     dropdownAddContact.innerHTML = ''
-
     contacts.forEach((contact, index) => {
         dropdownAddContact.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input id="checkboxAssigned${index}" onclick="addToAssignedContacts('${index}')" type="checkbox"></div>`;
     })
 }
+
+
+/**displays all existing categories */
+function displayExistingCategories() {
+    const dropdownCategory = document.getElementById('dropdownCategory');
+    dropdownCategory.innerHTML = '';
+    dropdownCategory.innerHTML = '<a onclick="openInputAddCategory()" href="#">Add category</a>';
+
+    for (let i = 0; i < tasks.length; i++) {
+        let task = tasks[i];
+        if (!displayedCategories.includes(task.category)) {
+            dropdownCategory.innerHTML +=
+                HTMLforExistingCategories(task)
+            displayedCategories.push(task.category)
+        }
+    }
+}
+
+
+/**displays clicked category and its color as label and sets them to be added to task*/
+function displayAddedCategoryFromSaved(category, colorCategory) {
+    document.getElementById('labelCategory').innerHTML = `<div class="assignedCategoryValues">
+    <a>${category}</a>
+    <div class="colorPicker colorPickerAssigned" style="background-color: ${colorCategory}; margin-bottom: 0 "></div>
+</div>`;
+    existingCategoryToAddToTask = category
+    existingColorCategoryToAddToTask = colorCategory
+}
+
+
+
+
+
 

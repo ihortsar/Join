@@ -309,11 +309,15 @@ body {
 /*Sign Up Form */
 #userName {
     background: url(../assets/img/user-icon.png) no-repeat scroll 370px 15px;
+    background-position: calc(100% - 20px) center;
+
+   
 }
 
 #emailLogin,
 #emailSignUp {
     background: url(../assets/img/email-icon.png) no-repeat scroll 370px 15px;
+    background-position: calc(100% - 20px) center;
 }
 
 #passwordLogin:focus,
@@ -328,6 +332,7 @@ body {
 #password,
 #passwordLogin {
     background: url(../assets/img/password-icon.png) no-repeat scroll 370px 15px;
+    background-position: calc(100% - 20px) center;
 }
 
 #registerBtn {

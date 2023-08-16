@@ -215,6 +215,18 @@ function HTMLforRenderAssignedContactsOnFullCard(i, colorCircle, contact) {
 }
 
 
+/**html of all existing categories */
+function HTMLforExistingCategories(task) {
+    return `<div onclick="displayAddedCategoryFromSaved('${task.category}','${task.colorCategory}')" class="assignedCategoryValues">
+    <a>${task.category}</a>
+    <div class="colorPicker colorPickerAssigned" style="background-color: ${task.colorCategory}; margin-bottom: 0 "></div>
+</div>`;
+}
+
+
+
+
+
 
 
 

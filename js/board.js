@@ -1,16 +1,6 @@
-tasks = []
-assignedContacts = []
-prios = []
-categories = []
-colorsCategory = []
-prioImages = ['./assets/img/urgent.png', './assets/img/medium.png', './assets/img/low.png']
-prioImagesFullCard = ['./assets/img/urgentOnclick.png', './assets/img/mediumOnclick.png', './assets/img/lowOnclick.png']
 tasksToEdit = []
 subtasksToSave = []
 let currentDragged
-let percentOfDone
-let checkboxState;
-let checkedInput
 let statusOpen
 
 
@@ -26,6 +16,9 @@ async function initBoard() {
         contacts = JSON.parse(backend.getItem('contacts')) || [];
         renderTaskCards()
         displayExistingCategories()
+        listenFullCard()
+        listenEditCard()
+
     } catch (er) {
         console.error(er)
     }
@@ -58,12 +51,12 @@ function hideProgressSection(i) {
 
 
 /**renders and sets colors to the reassigned contacts */
-function renderAssignedContactsOnBoard(i, colorCircle, contact) {
-    colorCircle = 0
+async function renderAssignedContactsOnBoard(i) {
+    let colorCircle = 0
     if (tasks[i].assignedTo) {
         document.getElementById(`assignedToCircles${i}`).innerHTML = ''
-        for (contact = 0; contact < tasks[i].assignedTo.length; contact++) {
-            checkIfTheContactNameChanged(i, contact)
+        for (let contact = 0; contact < tasks[i].assignedTo.length; contact++) {
+            await checkIfTheContactNameChanged(i, contact)
             HTMLforRenderAssignedContactsOnBoard(i, colorCircle, contact)
             colorCircle++
             if (colorCircle == 6) { colorCircle = 0 }
@@ -73,12 +66,12 @@ function renderAssignedContactsOnBoard(i, colorCircle, contact) {
 
 
 /**crenders and sets colors to the reassigned contacts on full card */
-function renderAssignedContactsOnFullCard(i, colorCircle, contact) {
+async function renderAssignedContactsOnFullCard(i, colorCircle, contact) {
     colorCircle = 0
     if (tasks[i].assignedTo) {
         document.getElementById(`assignedToFullCard`).innerHTML = ''
         for (contact = 0; contact < tasks[i].assignedTo.length; contact++) {
-            checkIfTheContactNameChanged(i, contact)
+            await checkIfTheContactNameChanged(i, contact)
             HTMLforRenderAssignedContactsOnFullCard(i, colorCircle, contact)
             colorCircle++
             if (colorCircle == 6) { colorCircle = 0 }
@@ -86,16 +79,6 @@ function renderAssignedContactsOnFullCard(i, colorCircle, contact) {
     }
 }
 
-
-/**checks if the name of contact in contacts was changed*/
-function checkIfTheContactNameChanged(i, contact) {
-    contacts.filter(maincontact => {
-        if (maincontact.email === tasks[i].assignedTo[contact].email) {
-            tasks[i].assignedTo[contact].firstNameLetter = maincontact.firstNameLetter;
-            tasks[i].assignedTo[contact].lastNameLetter = maincontact.lastNameLetter;
-        }
-    })
-}
 
 
 /**draws urgency pictures on board*/
@@ -123,7 +106,7 @@ async function renderDialogFullCard(i) {
     document.getElementById('dialogFullCard').innerHTML = HTMLrenderDialogFullCard(i)
     priorityImageForRenderFullTaskCard(i)
     renderSubtasksOnFullCard(i, counter)
-    renderAssignedContactsOnFullCard(i)
+    await renderAssignedContactsOnFullCard(i)
     checkForChecked(i, `checkBox${counter}`)
     let changeStatus = document.getElementById(`dropdown-contentForMobileDevices${i}`);
     changeStatus.style.display = 'none'
@@ -215,15 +198,6 @@ function filterTasks() {
 }
 
 
-/**clears subsections on board */
-function clearSubsections() {
-    document.getElementById('boardSubsectionToDo').innerHTML = ''
-    document.getElementById('boardSubsectionInProgress').innerHTML = ''
-    document.getElementById('boardSubsectionFeedback').innerHTML = ''
-    document.getElementById('boardSubsectionDone').innerHTML = ''
-}
-
-
 /**sorts the tasks */
 function checkForReadiness(i, j) {
     if (tasks[i].readinessState == 'toDo') {
@@ -246,6 +220,7 @@ function checkForReadiness(i, j) {
 
 
 function openTask() {
+
     document.getElementById('dialogFullCard').classList.remove('displayNone')
 
 }
@@ -299,7 +274,7 @@ function listenToEvent(i) {
                 contacts.forEach((contact, index) => {
                     dropdownAddContact.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input onclick="addDeleteReassignedContacts(${i},${index})" id="checkboxAssigned${index}"  type="checkbox"></div>`;
                 });
-                checkForCheckedAssigned(i)
+                checkForCheckedAssigned()
             });
         });
     }
@@ -318,11 +293,10 @@ function checkForChecked(i, checkedbox) {
 }
 
 
-function checkForCheckedAssigned(i) {
-    let checkedbox
+function checkForCheckedAssignedOnEdit(i) {
     contacts.forEach((contact, index) => {
         tasks[i].assignedTo.forEach(assigned => {
-            checkedbox = document.getElementById(`checkboxAssigned${index}`)
+            let checkedbox = document.getElementById(`checkboxAssigned${index}`)
             if (contact.email === assigned.email) {
                 checkedbox.checked = true;
             }
@@ -383,6 +357,7 @@ function openChangeStatusContent(i) {
     ifStatusAwaitingFeedbackForMobile(i)
     ifStatusDoneForMobile(i)
 }
+
 
 
 /**sets readiness state InProgress*/

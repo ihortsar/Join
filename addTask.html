@@ -13,9 +13,11 @@
 
     <script src="./js/mini_backend.js"></script>
     <script src="./js/HTMLsBoard_AddTask.js"></script>
+    <script src="./assets/templates/addTaskPopUp.js"></script>
     <script src="./js/addTask.js"></script>
     <script src="./js/contacts.js"></script>
     <script src="./script.js"></script>
+    <script src="./js/event-listeners.js"></script>
 </head>
 
 <body onload="initAddTask()">
@@ -87,7 +89,7 @@
                             <div id="eventLis"> <!--Assigned to container-->
                                 <label>Assigned to</label>
                                 <div id="dropdownAssigned" class="dropdownAssigned">
-                                    <div class="headerForSelectionField">
+                                    <div onclick="contactList('dropdownAddContact')" class="headerForSelectionField">
                                         <label style="position: relative;">Select contacts</label>
                                         <img class="arrDown" src="./assets/img/arrDown.png">
                                         <div>
@@ -129,7 +131,7 @@
                                 <label>Subtasks</label>
                                 <div class="addSubTask">
                                     <input maxlength="35" id="subtask" placeholder="Add a subtask">
-                                    <img onclick="addSubtask()" class="addSubtaskButton"
+                                    <img onclick="addSubtask('subtask')" class="addSubtaskButton"
                                         src="./assets/img/addSubtaskButton.png">
                                 </div>
                                 <div id="subtasksOnAddTask" class="subtasksDiv">
@@ -141,12 +143,11 @@
                                 <span></span>
                             </div>
                             <div class="buttonsCreateTask">
-                                <button onclick="window.location.reload(); return false" id="addTaskButton"
-                                    class="buttonClearTask">
+                                <button onclick="window.location.reload(); return false" class="buttonClearTask">
                                     <span>Clear</span>
                                     <span class="clearTaskPageImg">+</span>
                                 </button>
-                                <button type="submit" class="buttonCreateTask">
+                                <button id="addTaskButton" type="submit" class="buttonCreateTask">
                                     <span>Create Task</span>
                                     <img class="createTaskPageImg" src="./assets/img/createTaskPage.png">
                                 </button>

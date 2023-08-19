@@ -10,18 +10,16 @@ function listenToEvent(i) {
                 contacts.forEach((contact, index) => {
                     dropdownAddContact.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input onclick="addDeleteReassignedContacts(${i},${index})" id="checkboxAssigned${index}"  type="checkbox"></div>`;
                 });
-                checkForCheckedAssigned(i)
+                checkForCheckedAssignedOnEdit(i)
             });
         });
     }
 }
 
 
-function listen() {
+function listenFullCard() {
     let dialogFullCard = document.getElementById('dialogFullCard')
-    let dialogEditCard = document.getElementById('dialogEditCard')
     let dialogFullCardContent = document.getElementById('dialogFullCardContent')
-    let entireEditTaskCard = document.getElementById(' entireEditTaskCard')
     if (dialogFullCard) {
         dialogFullCard.addEventListener('click', function (event) {
             if (event.target === this) {
@@ -32,10 +30,16 @@ function listen() {
             })
         })
     }
+}
+
+
+function listenEditCard() {
+    let dialogEditCard = document.getElementById('dialogEditCard')
+    let entireEditTaskCard = document.getElementById(' entireEditTaskCard')
     if (dialogEditCard) {
         dialogEditCard.addEventListener('click', function (event) {
             if (event.target === this) {
-                closeEditTask()
+                closeEditCard()
             }
             entireEditTaskCard.addEventListener('click', function (event) {
                 event.stopPropagation()

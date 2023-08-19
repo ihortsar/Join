@@ -1,120 +1,3 @@
-let tasks = []
-let assignedContacts = []
-let prios = []
-let categories = []
-let colorsCategory = []
-let prioImages = ['./assets/img/urgent.png', './assets/img/medium.png', './assets/img/low.png']
-let prioImagesFullCard = ['./assets/img/urgentOnclick.png', './assets/img/mediumOnclick.png', './assets/img/lowOnclick.png']
-let tasksToEdit = []
-let subtasksToSave = []
-let date = new Date();
-contacts = []
-let displayedCategories = [];
-let existingCategoryToAddToTask
-let existingColorCategoryToAddToTask
-let readinessState
-let assignedFlag = false
-let colorOfBar
-let assignedTo
-
-function disableButtonAddTask() {
-    let button = document.getElementById('buttonCreateTaskPopUpTask')
-    button.disabled = true;
-
-    setTimeout(function () {
-        button.disabled = false;
-    }, 3000);
-}
-
-
-async function addToTasks() {
-
-    let title = document.getElementById('task');
-    let description = document.getElementById('description');
-    let date = document.getElementById('date');
-    let subtasks = subtasksToSave.splice(0, subtasksToSave.length)
-    let category = document.getElementById('selectedCategoryInputValue');
-
-    let prio = prios.slice(0).toString()
-    let colorCategory = colorsCategory.slice(0).toString()
-
-
-    let task = {
-        title: title.value,
-        description: description.value,
-        category: category.value,
-        colorCategory,
-        date: date.value,
-        prio,
-        subtasks,
-        readinessState,
-        pace: 0
-    };
-    manageCategories(task, category, colorsCategory)
-    await whenAllRequiredFilled(task)
-}
-
-
-/**checks if a new or existing  category and colorsCategory will be added*/
-function manageCategories(task, category, colorsCategory) {
-    if (category.value && colorsCategory.length > 0) {
-        task.category = category.value
-        task.colorCategory = colorsCategory.slice(0).toString()
-    } else {
-        task.category = existingCategoryToAddToTask
-        task.colorCategory = existingColorCategoryToAddToTask
-    }
-}
-
-
-/**checks if task.prio && task.category are filled, pushes the task, inables the button,saves it on server */
-async function whenAllRequiredFilled(task) {
-    if (task.prio && task.category && assignedFlag) {
-        addAssignedToTask(task)
-        tasks.push(task);
-        disableButtonAddTask()
-        await backend.setItem('tasks', JSON.stringify(tasks))
-        popTheAddedDesk()
-        setTimeout(function () { window.location.href = 'board.html'; }, 3000)
-    } else { conditionsIfRequiredSkipped(task) }
-}
-
-
-function conditionsIfRequiredSkipped(task) {
-    if (!task.prio) {
-        signalRequiredPriorities()
-    } else if (!task.category || task.category == undefined) {
-        signalRequiredCategory()
-    } else if (contacts.length > 0 && !assignedFlag) {
-        signalRequiredContact()
-    }
-}
-
-
-function addAssignedToTask(task) {
-    task.assignedTo = assignedContacts.splice(0, assignedContacts.length)
-}
-
-
-function addSubtaskOnPopUp() {
-    let subtask = document.getElementById('subtaskPopUp');
-    if (subtask.value) {
-        subtasksToSave.push({
-            subtask: subtask.value,
-            checkedValue: 0,
-        })
-    }
-    subtask.value = ''
-    renderSubtasksOnPopUpAddTask()
-}
-
-
-function deleteSubtask(i) {
-    subtasksToSave.splice(i, 1)
-    renderSubtasksOnPopUpAddTask()
-
-}
-
 
 function renderSubtasksOnPopUpAddTask() {
     document.getElementById('subtasksPopUp').innerHTML = ''
@@ -127,6 +10,7 @@ function renderSubtasksOnPopUpAddTask() {
 
 
 function openPopUpAddTask(state) {
+    contactList('dropdownAddContactPopUp')
     readinessState = state
     document.getElementById('addTaskPopUp').classList.add('openPopUp')
     document.getElementById(`date`).setAttribute("min", date.toISOString().split("T")[0]);
@@ -135,31 +19,6 @@ function openPopUpAddTask(state) {
 
 function closePopUpAddTask() {
     document.getElementById('addTaskPopUp').classList.remove('openPopUp')
-}
-
-
-async function popTheAddedDesk() {
-    document.getElementById('popUpWhenAdded').classList.remove('displayNone')
-    setTimeout(function () { document.getElementById('popUpWhenAdded').classList.add('displayNone') }, 2000)
-}
-
-
-function clearValuesOfAddTask(title, description, category, assignedTo, date) {
-    title.value = '',
-        description.value = '',
-        category.value = '',
-        assignedTo.value = '',
-        date.value = '',
-        assignedContacts = []
-}
-
-
-async function deleteTask(i) {
-
-    tasks.splice(i, 1);
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    renderTaskCards();
-    document.getElementById('dialogFullCard').classList.add('displayNone')
 }
 
 
@@ -191,79 +50,35 @@ function editColorPrios(selectedUrgency, i) {
 }
 
 
-function addPriority(i) {
-    let selectedPriority = document.getElementById("prio" + i);
-    let selectedUrgency = selectedPriority.getAttribute("value")
-    if (prios.length == 0) {
-        colorPrios(selectedUrgency, i)
-        prios.push(selectedUrgency)
-    } else {
-        prios = []
-        colorPrios(selectedUrgency, i)
-        prios.push(selectedUrgency)
-    }
+
+function checkForCheckedAssigned() {
+    let checkedbox
+    contacts.forEach((contact, index) => {
+        assignedContacts.forEach(assigned => {
+            checkedbox = document.getElementById(`checkboxAssigned${index}`)
+            if (contact.email === assigned.email) {
+                checkedbox.checked = true;
+            }
+        });
+    });
 }
 
 
-function colorPrios(selectedUrgency, i) {
-    if (selectedUrgency == 'urgent') {
-        document.getElementById("prio" + i).src = "./assets/img/urgentOnclick.png";
-        document.getElementById("prio" + 2).src = "./assets/img/mediumImg.png";
-        document.getElementById("prio" + 3).src = "./assets/img/lowImg.png";
-    }
-    if (selectedUrgency == 'medium') {
-        document.getElementById("prio" + i).src = "./assets/img/mediumOnclick.png"
-        document.getElementById("prio" + 1).src = "./assets/img/urgentImg.png"
-        document.getElementById("prio" + 3).src = "./assets/img/lowImg.png"
-    }
-    if (selectedUrgency == 'low') {
-        document.getElementById("prio" + i).src = "./assets/img/lowOnclick.png"
-        document.getElementById("prio" + 1).src = "./assets/img/urgentImg.png"
-        document.getElementById("prio" + 2).src = "./assets/img/mediumImg.png"
-    }
 
+/**html of all existing categories */
+function HTMLforExistingCategories(task) {
+    return `<div onclick="displayAddedCategoryFromSaved('${task.category}','${task.colorCategory}')" class="assignedCategoryValues">
+    <a>${task.category}</a>
+    <div class="colorPicker colorPickerAssigned" style="background-color: ${task.colorCategory}; margin-bottom: 0 "></div>
+</div>`;
 }
 
 
-function addCategoryOnTask() {
-    let value = document.getElementById('selectedCategoryInputValue').value;
-    if (value) {
-        document.getElementById('labelCategory').innerHTML = '';
-        document.getElementById('labelCategory').innerHTML = `<div class="assignedCategoryValues">
-         ${value}
-          <div class="colorPicker colorPickerAssigned" style="background-color: ${colorsCategory}"  id="assignedColor"></div>
-         </div>` ;
-        document.getElementById('hiddenInputCategory').classList.add('displayNone')
-        document.getElementById('dropdownCategory').style = 'none'
-    }
-}
-
-
-function openInputAddCategory() {
-    document.getElementById('selectedCategoryInputValue').value = ''
-    document.getElementById('hiddenInputCategory').classList.remove('displayNone')
-    document.getElementById('dropdownCategory').style = 'display:none'
-}
-
-
-function addCategoryColorOnTask(i) {
-    let value = document.getElementById('selectedCategoryInputValue').value;
-    if (value) {
-        let color = document.getElementById("color" + i).style.backgroundColor
-        if (colorsCategory.length == 0) {
-            colorsCategory.push(color)
-        } else {
-            colorsCategory = []
-            colorsCategory.push(color)
-        }
-        addCategoryOnTask()
-    }
-}
-
-
+/**pushes to assigned contacts if not added before,otherwise splices contact onclick*/
 function addToAssignedContacts(index) {
-    if (index >= 0 && index < contacts.length) {
+    if (index < contacts.length) {
         let contact = contacts[index];
+        contact.id = 1
         if (!assignedContacts.includes(contact)) {
             assignedContacts.push(contact);
             assignedFlag = true
@@ -275,14 +90,32 @@ function addToAssignedContacts(index) {
 }
 
 
+async function popTheAddedDesk() {
+    document.getElementById('popUpWhenAdded').classList.remove('displayNone')
+    setTimeout(function () { document.getElementById('popUpWhenAdded').classList.add('displayNone') }, 2000)
+}
+
+
 function closeHiddenInput() {
     document.getElementById('hiddenInputCategory').classList.add('displayNone')
     document.getElementById('dropdownCategory').style = 'display:inlineBlock'
 }
 
 
-function contactList() {
-    let droppedContacts = document.getElementById('dropdownAddContactPopUp');
+/**renders subtasks from subtasksToSave */
+function renderSubtasksOnAddTask() {
+    document.getElementById('subtasksOnAddTask').innerHTML = ''
+    subtasksToSave.forEach((subtask, index) => {
+        document.getElementById('subtasksOnAddTask').innerHTML += `<div class="checkBoxDiv">
+        <label class="subtaskLabel">${subtask.subtask}</label><img src="./assets/img/closeButtonBoard.png" onclick="deleteSubtask(${index})">
+        </div>`
+    })
+}
+
+
+/**iterates through contacts */
+function contactList(id) {
+    let droppedContacts = document.getElementById(id);
     if (droppedContacts.style.display === 'none') {
         droppedContacts.style.display = 'block'
     } else { droppedContacts.style.display = 'none' }
@@ -291,48 +124,7 @@ function contactList() {
     contacts.forEach((contact, index) => {
         droppedContacts.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input id="checkboxAssigned${index}" onclick="addToAssignedContacts('${index}')" type="checkbox"></div>`;
     })
-    checkForCheckedAssignedPopUp()
-}
-
-
-function checkForCheckedAssignedPopUp() {
-    let checkedbox
-
-    contacts.forEach((contact, index) => {
-
-        assignedContacts.forEach(assigned => {
-            checkedbox = document.getElementById(`checkboxAssigned${index}`)
-            if (contact.email === assigned.email) {
-                checkedbox.checked = true;
-            }
-        });
-    });
-}
-
-
-/** draws red border if required priority not set*/
-function signalRequiredPriorities() {
-    document.getElementById('prioritiesPopUp').classList.add('fillRequired')
-    setTimeout(() => {
-        document.getElementById('prioritiesPopUp').classList.remove('fillRequired')
-    }, 1000);
-}
-
-
-/** draws red border if required category not set*/
-function signalRequiredCategory() {
-    document.getElementById('categoryDropdownPopUp').classList.add('fillRequired')
-    setTimeout(() => {
-        document.getElementById('categoryDropdownPopUp').classList.remove('fillRequired')
-    }, 1000);
-}
-
-
-function signalRequiredContact() {
-    document.getElementById('eventLisPopUp').classList.add('fillRequired')
-    setTimeout(() => {
-        document.getElementById('eventLisPopUp').classList.remove('fillRequired')
-    }, 1000);
+    checkForCheckedAssigned()
 }
 
 
@@ -364,10 +156,10 @@ function displayAddedCategoryFromSaved(category, colorCategory) {
 }
 
 
-/**html of all existing categories */
-function HTMLforExistingCategories(task) {
-    return `<div onclick="displayAddedCategoryFromSaved('${task.category}','${task.colorCategory}')" class="assignedCategoryValues">
-    <a>${task.category}</a>
-    <div class="colorPicker colorPickerAssigned" style="background-color: ${task.colorCategory}; margin-bottom: 0 "></div>
-</div>`;
+/**clears subsections on board */
+function clearSubsections() {
+    document.getElementById('boardSubsectionToDo').innerHTML = ''
+    document.getElementById('boardSubsectionInProgress').innerHTML = ''
+    document.getElementById('boardSubsectionFeedback').innerHTML = ''
+    document.getElementById('boardSubsectionDone').innerHTML = ''
 }

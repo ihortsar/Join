@@ -2,7 +2,7 @@ let tasks = []
 let assignedContacts = []
 let prios = []
 let categories = []
-let colorsCategory
+let colorsCategory = []
 let prioImages = ['./assets/img/urgent.png', './assets/img/medium.png', './assets/img/low.png']
 let prioImagesFullCard = ['./assets/img/urgentOnclick.png', './assets/img/mediumOnclick.png', './assets/img/lowOnclick.png']
 let tasksToEdit = []
@@ -29,7 +29,7 @@ async function initAddTask() {
         contacts = JSON.parse(backend.getItem('contacts')) || [];
         document.getElementById("date").setAttribute("min", date.toISOString().split("T")[0])
         displayExistingCategories()
-        contactList()
+        contactList('dropdownAddContact')
     } catch (er) {
         console.error(er)
     }
@@ -62,7 +62,7 @@ async function addToTasks() {
         date: date.value,
         prio,
         subtasks,
-        readinessState: 'toDo',
+        readinessState: readinessState,
         pace: 0
     };
     manageCategories(task, category, colorsCategory)
@@ -93,6 +93,10 @@ function conditionsIfRequiredSkipped(task) {
     }
 }
 
+
+function addAssignedToTask(task) {
+    task.assignedTo = assignedContacts.splice(0, assignedContacts.length)
+}
 
 /**checks if a new or existing  category and colorsCategory will be added*/
 function manageCategories(task, category, colorsCategory) {
@@ -178,8 +182,8 @@ function colorPrios(selectedUrgency, i) {
 
 
 /**pushes value of subtask to subtasksToSave*/
-function addSubtask() {
-    let subtask = document.getElementById('subtask');
+function addSubtask(i) {
+    let subtask = document.getElementById(i);
     if (subtask.value) {
         subtasksToSave.push({
             subtask: subtask.value,
@@ -232,7 +236,12 @@ function addCategoryColorOnTask(i) {
     let value = document.getElementById('selectedCategoryInputValue').value;
     if (value) {
         let color = document.getElementById("color" + i).style.backgroundColor
-        colorsCategory = color
+        if (colorsCategory.length == 0) {
+            colorsCategory.push(color)
+        } else {
+            colorsCategory = []
+            colorsCategory.push(color)
+        }
         addCategoryOnTask()
     }
 }
@@ -245,80 +254,17 @@ function openInputAddContact() {
 }
 
 
-/**pushes to assigned contacts if not added before,otherwise splices contact onclick*/
-function addToAssignedContacts(index) {
-    if (index < contacts.length) {
-        let contact = contacts[index];
-        contact.id = 1
-        if (!assignedContacts.includes(contact)) {
-            assignedContacts.push(contact);
-            assignedFlag = true
-        } else {
-            assignedContacts.splice(assignedContacts.indexOf(contact), 1);
-            if (assignedContacts.length == 0) { assignedFlag = false }
-        }
+/**checks if the name of contact in contacts was changed*/
+async function checkIfTheContactNameChanged(i, contact) {
+    const filteredContacts = contacts.filter(maincontact => {
+        return maincontact.email === tasks[i].assignedTo[contact].email;
+    });
+
+    if (filteredContacts.length > 0) {
+        tasks[i].assignedTo[contact].firstNameLetter = filteredContacts[0].firstNameLetter;
+        tasks[i].assignedTo[contact].lastNameLetter = filteredContacts[0].lastNameLetter;
+    } else {
+        tasks[i].assignedTo.splice(1, contact)
+        await backend.setItem('tasks', JSON.stringify(tasks))
     }
 }
-
-
-async function popTheAddedDesk() {
-    document.getElementById('popUpWhenAdded').classList.remove('displayNone')
-    setTimeout(function () { document.getElementById('popUpWhenAdded').classList.add('displayNone') }, 2000)
-}
-
-
-function closeHiddenInput() {
-    document.getElementById('hiddenInputCategory').classList.add('displayNone')
-    document.getElementById('dropdownCategory').style = 'display:inlineBlock'
-}
-
-
-/**renders subtasks from subtasksToSave */
-function renderSubtasksOnAddTask() {
-    document.getElementById('subtasksOnAddTask').innerHTML = ''
-    subtasksToSave.forEach((subtask, index) => {
-        document.getElementById('subtasksOnAddTask').innerHTML += `<div class="checkBoxDiv">
-        <label class="subtaskLabel">${subtask.subtask}</label><img src="./assets/img/closeButtonBoard.png" onclick="deleteSubtask(${index})">
-        </div>`
-    })
-}
-
-
-/**iterates through contacts */
-function contactList() {
-    let dropdownAddContact = document.getElementById('dropdownAddContact');
-    dropdownAddContact.innerHTML = ''
-    contacts.forEach((contact, index) => {
-        dropdownAddContact.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input id="checkboxAssigned${index}" onclick="addToAssignedContacts('${index}')" type="checkbox"></div>`;
-    })
-}
-
-
-/**displays all existing categories */
-function displayExistingCategories() {
-    const dropdownCategory = document.getElementById('dropdownCategory');
-    dropdownCategory.innerHTML = '';
-    dropdownCategory.innerHTML = '<a onclick="openInputAddCategory()" href="#">Add category</a>';
-
-    for (let i = 0; i < tasks.length; i++) {
-        let task = tasks[i];
-        if (!displayedCategories.includes(task.category)) {
-            dropdownCategory.innerHTML +=
-                HTMLforExistingCategories(task)
-            displayedCategories.push(task.category)
-        }
-    }
-}
-
-
-/**displays clicked category and its color as label and sets them to be added to task*/
-function displayAddedCategoryFromSaved(category, colorCategory) {
-    document.getElementById('labelCategory').innerHTML = `<div class="assignedCategoryValues">
-    <a>${category}</a>
-    <div class="colorPicker colorPickerAssigned" style="background-color: ${colorCategory}; margin-bottom: 0 "></div>
-</div>`;
-    existingCategoryToAddToTask = category
-    existingColorCategoryToAddToTask = colorCategory
-}
-
-

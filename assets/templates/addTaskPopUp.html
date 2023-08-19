@@ -23,7 +23,7 @@
                 <div class="categoryContainer"> <!--Category container-->
                     <label>Category</label>
 
-                    <div id="categoryDropdownPopUp" class="dropdown">
+                    <div id="categoryDropdown" class="dropdown">
                         <div class="headerForSelectionField">
                             <label id="labelCategory">Select task category</label>
                             <img class="arrDown" src="./assets/img/arrDown.png">
@@ -63,8 +63,8 @@
 
                 <div class="contactContainer"> <!--Assigned to container-->
                     <label>Assigned to</label>
-                    <div id="eventLisPopUp" class="dropdownAssigned">
-                        <div onclick="contactList()" class="headerForSelectionField">
+                    <div id="dropdownAssigned" class="dropdownAssigned">
+                        <div onclick="contactList('dropdownAddContactPopUp')" class="headerForSelectionField">
                             <label style="position: relative;">Select contacts</label>
                             <img class="arrDown" src="./assets/img/arrDown.png">
                             <div>
@@ -92,7 +92,7 @@
 
                 <div class="prioPopUp">
                     <label>Prio</label>
-                    <div id="prioritiesPopUp" class="prioritiesPopUpTask">
+                    <div id="priorities" class="prioritiesPopUpTask">
                         <img id="prio1" value="urgent" onclick="addPriority(1)" class="priorityImg"
                             src="./assets/img/urgentImg.png">
                         <img id="prio2" value="medium" onclick="addPriority(2)" class="priorityImg"
@@ -109,10 +109,10 @@
                     <label>Subtasks</label>
                     <div class="addSubTaskPopUpTask">
                         <input maxlength="35" id="subtaskPopUp" placeholder="Add new subtask">
-                        <img class="addSubtaskButtonPopUpTask" onclick="addSubtaskOnPopUp()"
+                        <img class="addSubtaskButtonPopUpTask" onclick="addSubtask('subtaskPopUp')"
                             class="addSubtaskButtonPopUpTask" src="./assets/img/addSubtaskButton.png">
                     </div>
-                    <div id="subtasksPopUp" class="checkBoxSubtasksDivPopUp">
+                    <div id="subtasksOnAddTask" class="checkBoxSubtasksDivPopUp">
 
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                         <span class="clearTaskPageImgPopUpTask">+</span>
                         <!-- <img class="clearTaskPageImg" src="./assets/img/clearTaskPage.png"> -->
                     </button>
-                    <button type="submit" id="buttonCreateTaskPopUpTask" class="buttonCreateTaskPopUpTask">
+                    <button type="submit" id="addTaskButton" class="buttonCreateTaskPopUpTask">
                         <span>Create Task</span>
                         <img class="createTaskPageImgPopUpTask" src="./assets/img/createTaskPage.png">
                     </button>

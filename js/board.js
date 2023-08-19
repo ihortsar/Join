@@ -9,7 +9,6 @@ tasksToEdit = []
 subtasksToSave = []
 let currentDragged
 let percentOfDone
-let colorOfBar
 let checkboxState;
 let checkedInput
 let statusOpen
@@ -26,6 +25,7 @@ async function initBoard() {
         tasks = await JSON.parse(await backend.getItem('tasks')) || []
         contacts = JSON.parse(backend.getItem('contacts')) || [];
         renderTaskCards()
+        displayExistingCategories()
     } catch (er) {
         console.error(er)
     }
@@ -195,6 +195,7 @@ function startDragging(i) {
 async function moveTo(readinessState) {
     tasks = JSON.parse(await backend.getItem('tasks'))
     tasks[currentDragged].readinessState = readinessState
+
     await backend.setItem('tasks', JSON.stringify(tasks))
     renderTaskCards()
 }
@@ -442,10 +443,3 @@ function colorPriosForEditTask(i) {
         return selectedUrgency
     }
 }
-
-
-
-
-
-
-

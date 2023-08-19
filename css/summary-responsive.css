@@ -14,19 +14,19 @@
         animation: backgroundFade 1200ms ease-in-out 500ms, removePosition 1300ms ease-in-out 500ms;
         animation-fill-mode: forwards;
     }
-    
-    
+
+
     @keyframes backgroundFade {
         0% {
             background-color: rgba(42, 54, 71, 1);
         }
-    
+
         100% {
             background-color: rgba(42, 54, 71, 0);
             display: none;
         }
     }
-    
+
     #welcomeGreeting {
         position: absolute;
         top: 50%;
@@ -79,6 +79,7 @@
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        padding-bottom: 100px;
     }
 }
 
@@ -90,6 +91,7 @@
 
     section {
         margin-top: 0px;
+        padding-bottom: 100px;
     }
 
     .summary-headline {
@@ -169,7 +171,7 @@
 }
 
 @media (max-width: 500px) {
-    
+
     .checkbox-feedback {
         font-size: 17px;
     }
@@ -221,12 +223,14 @@
         font-size: 12px !important;
     }
 
-    .middle-board-inner, .bottom-board {
+    .middle-board-inner,
+    .bottom-board {
         width: 305px !important;
         height: 105px !important;
     }
 
-    .to-do, .done {
+    .to-do,
+    .done {
         height: 105px !important;
     }
 
@@ -234,9 +238,9 @@
         height: 70px;
     }
 
-    #todo-icon, #done-icon, #urgent-icon {
+    #todo-icon,
+    #done-icon,
+    #urgent-icon {
         height: 40px !important;
     }
 }
-
-

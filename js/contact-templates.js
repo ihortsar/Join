@@ -127,7 +127,7 @@ function memberInfo(l){
         <h2>${contacts[l].name}</h2>
         <span>
             <a href="../addTask.html">
-                <img src="../assets/img/contact-add-task.png">
+                <img src="./assets/img/contact-add-task.png">
                 Add Task
             </a>
         </span>

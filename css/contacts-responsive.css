@@ -1,13 +1,13 @@
 /* MEDIA Responsive */
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
 
-    .add-contact-button{
+    .add-contact-button {
         bottom: 90px;
         right: 10px;
     }
 
-    .contact-list{
+    .contact-list {
         display: flex;
         justify-content: center;
         left: 0;
@@ -17,17 +17,17 @@
         top: 90px;
     }
 
-    #contactList{
+    #contactList {
         width: 100%;
     }
 
-    .contact-info-bubble{
+    .contact-info-bubble {
         height: 75px;
         width: 75px;
         font-size: 40px;
     }
 
-    .contact-container{
+    .contact-container {
         display: none;
         background-color: #F5F5F5;
         left: 0;
@@ -36,37 +36,37 @@
         top: 90px;
     }
 
-    .contact-header{
+    .contact-header {
         padding-left: 32px;
     }
 
-    .contact-info{
+    .contact-info {
         top: 150px;
         padding-left: 32px;
         row-gap: 20px;
     }
 
-    .contact-info-close{
+    .contact-info-close {
         display: block;
     }
 
-    .contact-created{
+    .contact-created {
         bottom: 20%;
         width: 310px;
     }
 
 }
 
-@media (max-width:750px){
+@media (max-width:750px) {
 
-    .add-contact-overlay{
+    .add-contact-overlay {
         flex-direction: column;
         align-items: center;
         width: 350px;
         height: 650px;
     }
 
-    .add-contact-left{
+    .add-contact-left {
         width: 350px;
         border-bottom-left-radius: 0;
         border-top-right-radius: 20px;
@@ -76,7 +76,7 @@
         padding-left: 30px;
     }
 
-    .add-contact-right{
+    .add-contact-right {
         width: 350px;
         height: 55%;
         border-bottom-left-radius: 20px;
@@ -85,63 +85,63 @@
         transition: unset;
     }
 
-    .new-contact-circle-name{
+    .new-contact-circle-name {
         flex-direction: column;
         width: 350px;
         border-top-right-radius: 0;
         border-bottom-left-radius: 20px;
     }
 
-    .edit-contact-circle{
+    .edit-contact-circle {
         background-color: lightgray;
         position: absolute;
         top: 240px;
         left: 94px;
     }
 
-    .edit-contact-circle-for-edit{
+    .edit-contact-circle-for-edit {
         background-color: lightgray;
         position: absolute;
         top: 240px;
-        left: 94px; 
+        left: 94px;
     }
 
-    .contact-new-inputs{
+    .contact-new-inputs {
         margin-top: 40px;
     }
 
-    .close-contact-cross{
+    .close-contact-cross {
         display: none;
     }
 
-    .contact-new-cancel{
+    .contact-new-cancel {
         display: none !important;
     }
 
-    .create-cancel-box{
+    .create-cancel-box {
         justify-content: center;
     }
 
-    .add-contact-left{
+    .add-contact-left {
         padding-left: 0;
         align-items: center;
     }
 
-    .add-contact-logo{
+    .add-contact-logo {
         display: none;
     }
 
-    .edit-contact-left-line{
+    .edit-contact-left-line {
         top: 110px;
         left: 72px;
     }
 
-    .new-contact-left-line{
+    .new-contact-left-line {
         top: 160px;
         left: 70px;
     }
 
-    .close-contact-cross-white{
+    .close-contact-cross-white {
         display: block;
         position: absolute;
         top: 15px;
@@ -151,41 +151,46 @@
     }
 }
 
-@media (max-width: 640px){
+@media (max-width: 640px) {
 
-    .contact-header{
+    .contact-header {
         flex-direction: column;
         align-items: flex-start;
         margin-top: 10px;
     }
 
-    .kanban-responsive{
+    .kanban-responsive {
         display: block;
         font-size: 16px;
     }
 
-    .contact-header h1{
+    .contact-header h1 {
         font-size: 40px;
         margin: 10px 0 10px 0;
     }
 
-    .contact-header h2{
+    .contact-header h2 {
         font-size: 16px;
         margin: 0;
     }
 
-    .contacts-hr-line{
+    .contacts-hr-line {
         display: none;
+        height: 59px;
+        border: 3px solid #29ABE2;
+        margin: 30px;
     }
 
-    .hr-responsive{
+    .hr-responsive {
         display: flex;
-        border: 1px solid #29ABE2;;
+        border: 1px solid #29ABE2;
+        height: 59px;
+        border: 3px solid #29ABE2;
         margin: 15px 0 15px 0;
         width: 65px;
     }
 
-    .contact-info{
+    .contact-info {
         top: 160px;
     }
 
@@ -207,7 +212,7 @@
         display: none;
     }
 
-    .responsive-buttons{
+    .responsive-buttons {
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -216,13 +221,13 @@
         right: 10px;
     }
 
-    .edit-box{
+    .edit-box {
         width: 50px;
         height: 50px;
         cursor: pointer;
     }
 
-    .trash-can{
+    .trash-can {
         width: 21px;
         height: 24px;
         margin-bottom: 20px;
@@ -231,11 +236,11 @@
         cursor: pointer;
     }
 
-    .contact-container{
+    .contact-container {
         z-index: 1;
     }
 
-    .add-contact-button{
+    .add-contact-button {
         font-size: 0;
         gap: 0;
         height: 50px;
@@ -243,52 +248,52 @@
     }
 }
 
-@media (max-width: 440px){
+@media (max-width: 440px) {
 
-    .contact-container{
+    .contact-container {
         height: 82%;
     }
 
-    .responsive-buttons{
+    .responsive-buttons {
         bottom: 45px;
     }
 
 
-.add-contact-overlay{
-    width: 310px;
-    height: 600px;
-}
+    .add-contact-overlay {
+        width: 310px;
+        height: 600px;
+    }
 
-.add-contact-left{
-    width: 310px;
-}
+    .add-contact-left {
+        width: 310px;
+    }
 
-.add-contact-right{
-    width: 310px;
-}
+    .add-contact-right {
+        width: 310px;
+    }
 
-.new-contact-circle-name{
-    width: 310px;
-}
+    .new-contact-circle-name {
+        width: 310px;
+    }
 
-.edit-contact-circle-for-edit{
-    top: 220px;
-    left: 75px;
-}
+    .edit-contact-circle-for-edit {
+        top: 220px;
+        left: 75px;
+    }
 
-.edit-contact-circle {
-    top: 220px;
-    left: 75px;
-}
+    .edit-contact-circle {
+        top: 220px;
+        left: 75px;
+    }
 
-.edit-contact-left-line {
-    top: 105px;
-    left: 51px;
-}
+    .edit-contact-left-line {
+        top: 105px;
+        left: 51px;
+    }
 
-.new-contact-left-line {
-    top: 155px;
-    left: 51px;
-}
+    .new-contact-left-line {
+        top: 155px;
+        left: 51px;
+    }
 
 }

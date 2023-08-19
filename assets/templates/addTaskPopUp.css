@@ -133,6 +133,7 @@ input {
     display: flex;
     flex-direction: row;
     margin-bottom: 0 !important;
+    width: max-content
 }
 
 .prioPopUp {
@@ -181,7 +182,7 @@ input {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
+    margin: 0
 }
 
 .colorPickerAssigned {
@@ -504,6 +505,11 @@ hr {
     border: 1px solid #D1D1D1;
 }
 
+.fillRequired {
+    border: red 2px solid;
+    border-radius: 10px;
+
+}
 @keyframes taskAddedPopUp {
 
     0% {
@@ -618,7 +624,8 @@ hr {
     }
 
     .prioritiesPopUpTask {
-        margin: 0
+        margin: 0;
+        align-items: center;
     }
 
     .hiddenInput {
@@ -693,10 +700,6 @@ hr {
     hr {
         right: 8%;
         width: 25px
-    }
-
-    .assignedCategoryValues {
-        justify-content: flex-start;
     }
 
     input {

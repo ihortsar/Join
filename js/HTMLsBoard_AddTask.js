@@ -38,7 +38,7 @@ function HTMLrenderTaskCards(i, j) {
 function HTMLrenderDialogFullCard(i) {
     return `
     <div id="dialogFullCardContent" class="dialogFullCardContent">
-        <div class="wrapperDialog">
+        <div id="wrapperDialog" class="wrapperDialog">
                  <img onclick="closeTask()" class="closeButtondialogFullCard" src="./assets/img/closeButtonBoard.png">
                  <div class="categoryDialog" style="background-color: ${tasks[i].colorCategory}"> 
                       ${tasks[i].category}

@@ -5,6 +5,7 @@ body {
     justify-content: end;
     align-items: end;
     margin: 0;
+
 }
 
 .wrapper {
@@ -302,7 +303,7 @@ hr {
     background-color: rgba(42, 54, 71, 1);
     color: white;
     border-radius: 10px;
-    padding: 0 15px;
+    padding: 10px 15px;
     font-size: 21px;
     border: none;
 }
@@ -574,8 +575,16 @@ hr {
         right: 2%;
         top: 27%;
     }
-}
 
+    .priorities {
+        width: auto;
+    }
+
+    .buttonClearTask {
+        display: none;
+    }
+
+}
 
 @media(min-width:800px) and (max-width:1000px) {
     .wrapper {
@@ -625,6 +634,9 @@ hr {
         padding: 10px 5px
     }
 
+
+
+
     .droppedContacts input {
         left: 50%
     }
@@ -650,6 +662,9 @@ hr {
     .priorityImg {
         width: 20%
     }
+
+
+
 }
 
 @media(min-width:800px)and (max-width:850px) {
@@ -674,6 +689,10 @@ hr {
 @media(min-width:750px)and (max-width:800px) {
     .selectedCategoryInputValue {
         width: 108% !important;
+    }
+
+    .buttonClearTask {
+        display: none;
     }
 }
 
@@ -705,16 +724,16 @@ hr {
     }
 
     input {
-        width: 70% !important;
+        width: inherit;
     }
 
 
     .taskBoard textarea {
-        width: 70%
+        width: inherit
     }
 
     .dropdown {
-        width: 70%
+        width: inherit
     }
 
     .dropdownAssigned {
@@ -735,6 +754,14 @@ hr {
 
     .closeHiddenInput {
         right: 17%;
+    }
+
+    .droppedContacts input {
+        left: 50%;
+    }
+
+    .dropdown-content a {
+        width: 70%
     }
 
 }

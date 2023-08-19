@@ -15,6 +15,10 @@ let date = new Date();
 let displayedCategories = [];
 let existingCategoryToAddToTask
 let existingColorCategoryToAddToTask
+let readinessState
+let assignedFlag = false
+let assignedTo
+
 
 async function initAddTask() {
     initScript();
@@ -44,23 +48,21 @@ function disableButtonAddTask() {
 
 
 async function addToTasks() {
+
     let title = document.getElementById('task');
     let description = document.getElementById('description');
     let date = document.getElementById('date');
     let subtasks = subtasksToSave.splice(0, subtasksToSave.length)
     let category = document.getElementById('selectedCategoryInputValue');
-    let assignedTo = assignedContacts.splice(0, assignedContacts.length)
     let prio = prios.slice(0).toString()
 
     let task = {
         title: title.value,
         description: description.value,
-        assignedTo: assignedTo.value,
         date: date.value,
         prio,
         subtasks,
         readinessState: 'toDo',
-        assignedTo,
         pace: 0
     };
     manageCategories(task, category, colorsCategory)
@@ -70,16 +72,24 @@ async function addToTasks() {
 
 /**checks if task.prio && task.category are filled, pushes the task, inables the button,saves it on server */
 async function whenAllRequiredFilled(task) {
-    if (task.prio && task.category) {
+    if (task.prio && task.category && assignedFlag) {
+        task.assignedTo = assignedContacts.splice(0, assignedContacts.length)
         tasks.push(task);
         disableButtonAddTask()
         await backend.setItem('tasks', JSON.stringify(tasks))
         popTheAddedDesk()
         setTimeout(function () { window.location.href = 'board.html'; }, 3000)
-    } else if (!task.prio) {
+    } else { conditionsIfRequiredSkipped(task) }
+}
+
+
+function conditionsIfRequiredSkipped(task) {
+    if (!task.prio) {
         signalRequiredPriorities()
     } else if (!task.category || task.category == undefined) {
         signalRequiredCategory()
+    } else if (contacts.length > 0 && !assignedFlag) {
+        signalRequiredContact()
     }
 }
 
@@ -110,6 +120,14 @@ function signalRequiredCategory() {
     document.getElementById('categoryDropdown').classList.add('fillRequired')
     setTimeout(() => {
         document.getElementById('categoryDropdown').classList.remove('fillRequired')
+    }, 1000);
+}
+
+
+function signalRequiredContact() {
+    document.getElementById('dropdownAssigned').classList.add('fillRequired')
+    setTimeout(() => {
+        document.getElementById('dropdownAssigned').classList.remove('fillRequired')
     }, 1000);
 }
 
@@ -156,7 +174,6 @@ function colorPrios(selectedUrgency, i) {
         document.getElementById("prio" + 1).src = "./assets/img/urgentImg.png"
         document.getElementById("prio" + 2).src = "./assets/img/mediumImg.png"
     }
-
 }
 
 
@@ -228,15 +245,17 @@ function openInputAddContact() {
 }
 
 
-/**pushes to assigned contacts if not added befor,otherwise splices contact onclick*/
+/**pushes to assigned contacts if not added before,otherwise splices contact onclick*/
 function addToAssignedContacts(index) {
     if (index < contacts.length) {
         let contact = contacts[index];
         contact.id = 1
         if (!assignedContacts.includes(contact)) {
             assignedContacts.push(contact);
+            assignedFlag = true
         } else {
             assignedContacts.splice(assignedContacts.indexOf(contact), 1);
+            if (assignedContacts.length == 0) { assignedFlag = false }
         }
     }
 }
@@ -259,7 +278,7 @@ function renderSubtasksOnAddTask() {
     document.getElementById('subtasksOnAddTask').innerHTML = ''
     subtasksToSave.forEach((subtask, index) => {
         document.getElementById('subtasksOnAddTask').innerHTML += `<div class="checkBoxDiv">
-        <label class="subtaskLabel">${subtask.subtask}</label><img src=".././assets/img/closeButtonBoard.png" onclick="deleteSubtask(${index})">
+        <label class="subtaskLabel">${subtask.subtask}</label><img src="./assets/img/closeButtonBoard.png" onclick="deleteSubtask(${index})">
         </div>`
     })
 }
@@ -301,9 +320,5 @@ function displayAddedCategoryFromSaved(category, colorCategory) {
     existingCategoryToAddToTask = category
     existingColorCategoryToAddToTask = colorCategory
 }
-
-
-
-
 
 

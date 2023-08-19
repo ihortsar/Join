@@ -10,11 +10,16 @@
     <link rel="stylesheet" href="fonts.css">
     <link rel="icon" href="assets/img/logo-blue.png">
     <script src="script.js"></script>
+    <script src="./assets/templates/addTaskPopUp.js"></script>
+    <script src="js/addTask.js"></script>
+    <script src="js/event-listeners.js"></script>
     <script src="js/contacts.js"></script>
     <script src="js/contact-templates.js"></script>
     <script src="js/mini_backend.js"></script>
     <link rel="stylesheet" href="css/contacts.css">
     <link rel="stylesheet" href="css/contacts-responsive.css">
+    <link rel="stylesheet" href="css/contacts-responsive.css">
+    <link rel="stylesheet" href="./assets/templates/addTaskPopUp.css">
 
 
 </head>
@@ -22,6 +27,7 @@
 <body onload="initContacts()">
     <div w3-include-html="./assets/templates/header.html"></div>
     <div w3-include-html="./assets/templates/Sidebar.html"></div>
+    <div onload="contactList()" id="includeContainer" w3-include-html="./assets/templates/addTaskPopUp.html"></div>
     <div class="contacts">
 
         <div class="overlay-container d-none" id="overlayContainer">
@@ -43,9 +49,9 @@
             <div class="contact-header">
                 <div class="kanban-responsive d-none">Kanban Project Management Tool</div>
                 <h1>Contacts</h1>
-                <hr class="contacts-hr-line">
+                <hr class="contacts-hr-line hrContacts">
                 <h2 class="better">Better with a team</h2>
-                <hr class="hr-responsive d-none">
+                <hr class="hr-responsive d-none hrContacts">
             </div>
             <img class="contact-info-close d-none" onclick="closeContactInfo()" src="./assets/img/black-back-arrow.png">
             <div class="contact-info d-none" id="contactInfo">

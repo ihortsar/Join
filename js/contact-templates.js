@@ -115,7 +115,7 @@ function memberHTML(l) {
                 `;
 }
 
-function memberInfo(l){
+function memberInfo(l) {
     const backgroundColor = getContactBackgroundColor(l);
 
     return `
@@ -126,7 +126,7 @@ function memberInfo(l){
     <div class="contact-info-headname">
         <h2>${contacts[l].name}</h2>
         <span>
-            <a href="../addTask.html">
+            <a onclick="openPopUpAddTask('toDo')">
                 <img src="./assets/img/contact-add-task.png">
                 Add Task
             </a>

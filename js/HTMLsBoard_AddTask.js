@@ -77,34 +77,34 @@ function HTMLrenderDialogFullCard(i) {
 
 function HTMLrenderSubtasksDialogFullCard(i, subtask, counter) {
     return `<div class="checkBoxDiv">
-    <span>${subtask.subtask}</span><input type="checkbox" onclick="countSubtasks(${i},${counter})"  id="checkBox${counter}" class="addedSubtaskOnEdit">
+    <span>${subtask.subtask}</span><input type="checkbox" onclick="countSubtasks(${i},${counter})"  id="checkBox${counter}" class="addedSubtaskOnEdit inputPopUp">
 </div>`}
 
 
 function openEditTaskHTML(i) {
 
-    return `<div id="entireEditTaskCard" class="dialogFullCardContent"
+    return `<div id="entireEditTaskCard" class="dialogFullCardContent formDiv"
         style="display:flex; justify-content: center !important; align-items: center;">
         <form class="boardEditTaskForm" onsubmit="editTask(${i}); return false;">
-            <div>
+            <div class="formDiv">
                 <label>Title</label>
-                <input class="inputEdit" id="editedTask" type="text" placeholder="Enter a title" required value="${tasks[i].title}">
+                <input class="inputEdit inputPopUp" id="editedTask" type="text" placeholder="Enter a title" required value="${tasks[i].title}">
             </div>
 
-            <div>
+            <div class="formDiv"> 
                 <label>Description</label>
                 <textarea class="textareaEdit" id="editedDescription" required type="text"
                     placeholder="Enter a description">${tasks[i].description}</textarea>
             </div>
 
-            <div>
+            <div class="formDiv">
                 <label>Due date</label>
-                <input class="inputEdit" type="date" id="editedDate" value="${tasks[i].date}" required />
+                <input class="inputEdit inputPopUp" type="date" id="editedDate" value="${tasks[i].date}" required />
             </div>
 
-            <div><!--Prio container-->
+            <div class="formDiv"><!--Prio container-->
                 <label>Prio</label>
-                <div class="priorities">
+                <div class="priorities formDiv">
                     <img id="prio4" value="urgent" onclick="addEditedPriority(${i},${4})" class="priorityImgEdit"
                         src="./assets/img/urgentImg.png">
                     <img id="prio5" value="medium" onclick="addEditedPriority(${i},${5})" class="priorityImgEdit"
@@ -116,14 +116,14 @@ function openEditTaskHTML(i) {
 
              
 
-            <div class="AssignedTo" style="padding:6px;"> <!--Assigned to container-->
+            <div class="AssignedTo formDiv" style="padding:6px;"> <!--Assigned to container-->
                 <label>Assigned to</label>
                 <div id="reassignContacts" class="dropdownEditTask">
                     <div  class="headerForSelectionField">
                         <span style="position: relative;">Reassign contacts</span>
                         <img class="arrDown" src="./assets/img/arrDown.png">
                         <div>
-                            <input id="editedHiddenInputAddContact" class="hiddenInput displayNone"
+                            <input id="editedHiddenInputAddContact" class="hiddenInput displayNone inputPopUp"
                                 placeholder="New category name"> <!--Hidden input addContact-->
                         </div>
                     </div>

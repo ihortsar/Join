@@ -122,7 +122,7 @@ function contactList(id) {
     droppedContacts.innerHTML = ''
 
     contacts.forEach((contact, index) => {
-        droppedContacts.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input id="checkboxAssigned${index}" onclick="addToAssignedContacts('${index}')" type="checkbox"></div>`;
+        droppedContacts.innerHTML += `<div class="droppedContacts formDiv"><a>${contact.name}</a><input id="checkboxAssigned${index}" onclick="addToAssignedContacts('${index}')" type="checkbox"></div>`;
     })
     checkForCheckedAssigned()
 }

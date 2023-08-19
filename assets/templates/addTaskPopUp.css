@@ -87,7 +87,7 @@ h1 {
 
 }
 
-form div {
+.formDiv {
     display: flex;
     flex-direction: column;
     margin-bottom: 33px;
@@ -107,7 +107,7 @@ select {
 }
 
 
-form span {
+.formSpan {
 
     line-height: 120%;
 
@@ -117,7 +117,7 @@ form label {
     margin-bottom: 10px;
 }
 
-input {
+.inputPopUp {
     width: 422px !important;
     border-radius: 10px;
     padding: 13px 21px !important;
@@ -129,11 +129,15 @@ input {
     resize: none;
 }
 
+.displayNone {
+    display: none;
+}
+
 .prioritiesPopUpTask {
     display: flex;
     flex-direction: row;
     margin-bottom: 0 !important;
-    width: max-content
+/*     width: max-content */
 }
 
 .prioPopUp {
@@ -189,7 +193,7 @@ input {
     margin-left: 20px;
 }
 
-hr {
+.hrPopUp {
     background-color: #9e9c9c;
     transform: rotate(90deg);
     height: 1px;
@@ -226,8 +230,15 @@ hr {
     color: #000000;
     border: 1px solid #D1D1D1;
     margin-bottom: 0 !important;
+}
 
+.droppedContacts {
 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 3px;
+    position: relative;
 }
 
 .dropdown-content {
@@ -510,6 +521,14 @@ hr {
     border-radius: 10px;
 
 }
+
+.droppedContacts input {
+    margin-right: 2px !important;
+    position: absolute;
+    left: 85% !important;
+    width: 10px !important
+}
+
 @keyframes taskAddedPopUp {
 
     0% {
@@ -560,6 +579,9 @@ hr {
         justify-content: space-around;
     }
 
+    .droppedContacts input {
+        left: 50%;
+    }
 
     .taskBoardPopUpTask {
         display: flex;
@@ -592,7 +614,7 @@ hr {
         height: 90%
     }
 
-    input {
+    .inputPopUp {
         width: 90% !important;
         margin-right: 20px;
         font-size: 16px;
@@ -611,7 +633,7 @@ hr {
         width: 90% !important
     }
 
-    form div {
+    .formDiv {
         width: 90%
     }
 
@@ -697,12 +719,12 @@ hr {
         right: 14%;
     }
 
-    hr {
+    .hrPopUp {
         right: 8%;
         width: 25px
     }
 
-    input {
+    .inputPopUp {
         padding: 16px 21px !important
     }
 
@@ -719,7 +741,7 @@ hr {
         display: none !important
     }
 
-    input {
+    .inputPopUp {
         width: 90% !important;
         margin-right: 20px;
         font-size: 16px;
@@ -743,7 +765,7 @@ hr {
         width: 90% !important
     }
 
-    form div {
+    .formDiv {
         width: 90%
     }
 
@@ -767,6 +789,10 @@ hr {
 
     .headerForSelectionField label {
         width: 150% !important
+    }
+
+    .droppedContacts input {
+        left: 95% !important;
     }
 }
 

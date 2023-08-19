@@ -68,7 +68,7 @@ h4 {
     padding-right: 30px;
 }
 
-input::-webkit-search-cancel-button {
+.inputPopUp::-webkit-search-cancel-button {
     display: none;
 }
 
@@ -414,7 +414,7 @@ input::-webkit-search-cancel-button {
 }
 
 
-input {
+.inputPopUp {
     width: 50% !important;
     padding: 6px !important
 }

@@ -246,7 +246,7 @@ form label {
     position: absolute;
     top: 40px;
     left: -1px;
-    width: 464px;
+    width: 100% !important;
     background-color: #ffffff;
     color: #D1D1D1;
     border: 1px solid;

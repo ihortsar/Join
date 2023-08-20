@@ -55,6 +55,7 @@ h4 {
     display: flex;
     align-items: center;
     position: relative;
+  
 }
 
 .boardInput {
@@ -66,6 +67,7 @@ h4 {
     font-size: 16px;
     margin-right: 30px;
     padding-right: 30px;
+    position: relative;
 }
 
 .inputPopUp::-webkit-search-cancel-button {
@@ -74,8 +76,8 @@ h4 {
 
 .searchImgInput {
     position: absolute;
-    top: 17px;
-    right: 38%
+    right: 50%;
+    z-index: 10;
 }
 
 .headings {

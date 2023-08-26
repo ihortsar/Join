@@ -12,6 +12,13 @@
 
 }
 
+.inputPopUp:hover::-webkit-calendar-picker-indicator,
+.inputPopUp:hover::-webkit-inner-spin-button,
+.inputPopUp:hover::-webkit-clear-button {
+    filter: invert(50%);
+    cursor: pointer;
+}
+
 .openPopUp {
 
     transform: translateX(0px);
@@ -30,11 +37,12 @@
     align-items: flex-start;
     background-color: #F6F7F8;
     margin: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 70%;
     height: 90%;
     border-radius: 30px;
     padding: 0 74px;
+
 
 }
 
@@ -118,16 +126,18 @@ form label {
 }
 
 .inputPopUp {
-    width: 422px !important;
+    width: 422px;
     border-radius: 10px;
-    padding: 13px 21px !important;
+    padding: 13px 21px;
     color: #000000;
     border: 1px solid #D1D1D1;
     font-size: 21px;
     line-height: 120%;
     outline: none;
     resize: none;
+
 }
+
 
 .displayNone {
     display: none;
@@ -136,12 +146,12 @@ form label {
 .prioritiesPopUpTask {
     display: flex;
     flex-direction: row;
-    margin-bottom: 0 !important;
-/*     width: max-content */
+    margin-bottom: 0 !important
 }
 
 .prioPopUp {
-    width: 81%
+    width: fit-content;
+
 }
 
 
@@ -154,10 +164,9 @@ form label {
 
 .priorityImg {
     height: 50px;
-    width: 50%;
+    width: 30%;
     border-radius: 10px;
     margin-right: 4px;
-    border: 1px solid #D1D1D1;
 
 }
 
@@ -178,7 +187,8 @@ form label {
     position: absolute;
     left: 0;
     top: 0;
-
+    bottom: 0;
+    right: 0
 }
 
 .assignedCategoryValues {
@@ -218,6 +228,11 @@ form label {
 
 
 }
+
+.dropdownCategoryMain {
+    position: relative;
+}
+
 
 .dropdownAssigned {
     position: relative;
@@ -266,10 +281,10 @@ form label {
 
 }
 
-.dropdown:hover .dropdown-content {
+/* .dropdown:hover .dropdown-content {
     display: block;
     border-top: none;
-}
+} */
 
 
 .colorPickers {
@@ -377,6 +392,12 @@ form label {
     top: 17px;
     right: 40px
 }
+
+.addSubtaskButtonPopUpTask:hover {
+    cursor: pointer
+}
+
+
 
 .addSubTaskPopUpTask {
     position: relative;
@@ -529,6 +550,11 @@ form label {
     width: 10px !important
 }
 
+/* 
+.selectedCategoryInputValue {
+    z-index: 10000;
+} */
+
 @keyframes taskAddedPopUp {
 
     0% {
@@ -572,6 +598,7 @@ form label {
         border-radius: 0;
         align-items: center;
         padding: 0;
+        overflow-x: hidden;
 
     }
 
@@ -615,7 +642,7 @@ form label {
     }
 
     .inputPopUp {
-        width: 90% !important;
+        width: 90.5%;
         margin-right: 20px;
         font-size: 16px;
     }
@@ -648,6 +675,7 @@ form label {
     .prioritiesPopUpTask {
         margin: 0;
         align-items: center;
+        width: auto;
     }
 
     .hiddenInput {
@@ -725,7 +753,7 @@ form label {
     }
 
     .inputPopUp {
-        padding: 16px 21px !important
+        padding: 16px 21px
     }
 
     .taskAddedPopUp span {
@@ -733,6 +761,7 @@ form label {
         margin-left: 10%;
 
     }
+
 
 }
 
@@ -742,10 +771,10 @@ form label {
     }
 
     .inputPopUp {
-        width: 90% !important;
+        width: 90%;
         margin-right: 20px;
         font-size: 16px;
-        padding: 16px 21px !important
+        padding: 16px 21px
     }
 
     .hiddenInput {
@@ -800,5 +829,50 @@ form label {
     .priorityImg {
         width: 30% !important;
         height: 70%
+    }
+}
+
+@media(min-width:825px) and (max-width:1000px) {
+    .inputOfCategory {
+        width: 92% !important;
+    }
+}
+
+@media(min-width:1000px) and (max-width:1100px) {
+    .inputOfCategory {
+        width: 97% !important;
+    }
+}
+
+@media(min-width:1100px) and (max-width:1200px) {
+    .inputOfCategory {
+        width: 98% !important;
+    }
+}
+
+@media(min-width:1200px) and (max-width:1600px) {
+    .inputOfCategory {
+        width: 100% !important;
+    }
+}
+
+
+@media(max-width:640px) {
+    .inputOfCategory {
+        width: 86% !important;
+        padding-right: 35px !important;
+    }
+}
+
+@media(max-width:500px) {
+    .inputOfCategory {
+        width: 83% !important;
+        padding-right: 35px !important;
+    }
+}
+
+@media(max-width:400px) {
+    .inputOfCategory {
+        width: 80% !important;
     }
 }

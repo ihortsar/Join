@@ -136,7 +136,7 @@ function memberInfo(l) {
 <div class="contact-info-edit">
     <span class="contact-edit-text">Contact Information</span>
     <span class="contact-edit-popup" onclick="openEditContacts(${l})">
-        <img src="../assets/img/contact-edit.png">
+        <img src="./assets/img/contact-edit.png">
         Edit Contact
     </span>
 </div>
@@ -149,8 +149,8 @@ function memberInfo(l) {
 
 
 <div class="responsive-buttons d-none">
-    <img class="trash-can" src="../assets/img/delete-box.png" onclick="deleteNewContact(${l})">
-    <img class="edit-box" src="../assets/img/edit-box.png" onclick="openEditContacts(${l})">
+    <img class="trash-can" src="./assets/img/delete-box.png" onclick="deleteNewContact(${l})">
+    <img class="edit-box" src="./assets/img/edit-box.png" onclick="openEditContacts(${l})">
 </div>
     `;
 }

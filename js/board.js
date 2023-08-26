@@ -2,9 +2,7 @@ tasksToEdit = []
 subtasksToSave = []
 let currentDragged
 let statusOpen
-
-
-
+let reassignContactsOnEdit = false
 
 
 async function initBoard() {
@@ -18,20 +16,23 @@ async function initBoard() {
         displayExistingCategories()
         listenFullCard()
         listenEditCard()
-
+        listenAddTaskPopUp()
     } catch (er) {
         console.error(er)
     }
 }
 
+
 /**clears the page, filters tasks, iterates through tasks looking for entered value in filterTasks() */
-function renderTaskCards(i, j) {
+async function renderTaskCards(i, j) {
     clearSubsections()
     let search = filterTasks()
     j = 0;
+
     for (i = 0; i < tasks.length; i++) {
         if (tasks[i].title.toLowerCase().includes(search) || tasks[i].description.toLowerCase().includes(search)) {
-            checkForReadiness(i, j)
+            checkForReadiness(i, j, tasks[i].readinessState)
+            await checkIfContactNotDeleted(i)
             document.getElementById('progressBar' + i).style.background = tasks[i].colorOfBar
             renderAssignedContactsOnBoard(i)
             hideProgressSection(i)
@@ -80,22 +81,11 @@ async function renderAssignedContactsOnFullCard(i, colorCircle, contact) {
 }
 
 
-
 /**draws urgency pictures on board*/
-function priorityImageForRenderTaskCards(i, j) {
-    if (tasks[i].prio == 'urgent') { document.getElementById(`urgencyBoard${j}`).src = prioImages[0] }
-    if (tasks[i].prio == 'medium') { document.getElementById(`urgencyBoard${j}`).src = prioImages[1] }
-    if (tasks[i].prio == 'low') { document.getElementById(`urgencyBoard${j}`).src = prioImages[2] }
-
-}
-
-
-/**crenders and sets colors to the reassigned contacts on FullTaskCard */
-function priorityImageForRenderFullTaskCard(i) {
-    if (tasks[i].prio == 'urgent') { document.getElementById(`urgencyFullCard${i}`).src = prioImagesFullCard[0] }
-    if (tasks[i].prio == 'medium') { document.getElementById(`urgencyFullCard${i}`).src = prioImagesFullCard[1] }
-    if (tasks[i].prio == 'low') { document.getElementById(`urgencyFullCard${i}`).src = prioImagesFullCard[2] }
-
+function priorityImageForRenderTaskCards(i, id, imgLow, imgMedium, imgUrgent) {
+    if (tasks[i].prio == 'urgent') { document.getElementById(id).src = imgLow }
+    if (tasks[i].prio == 'medium') { document.getElementById(id).src = imgMedium }
+    if (tasks[i].prio == 'low') { document.getElementById(id).src = imgUrgent }
 }
 
 
@@ -104,7 +94,7 @@ async function renderDialogFullCard(i) {
     let counter = 0
     document.getElementById('dialogFullCard').classList.remove('displayNone')
     document.getElementById('dialogFullCard').innerHTML = HTMLrenderDialogFullCard(i)
-    priorityImageForRenderFullTaskCard(i)
+    priorityImageForRenderTaskCards(i, `urgencyFullCard${i}`, prioImagesFullCard[0], prioImagesFullCard[1], prioImagesFullCard[2])
     renderSubtasksOnFullCard(i, counter)
     await renderAssignedContactsOnFullCard(i)
     checkForChecked(i, `checkBox${counter}`)
@@ -129,9 +119,9 @@ function openEditTask(i) {
     document.getElementById('dialogEditCard').classList.remove('displayNone')
     document.getElementById('dialogEditCard').innerHTML = openEditTaskHTML(i)
     document.getElementById(`editedDate`).setAttribute("min", date.toISOString().split("T")[0]);
-    listenToEvent(i)
     colorPriosForEditTask(i)
 }
+
 
 /**gets the current state of tasks, redefines values for the task,saves them and renders */
 async function editTask(i) {
@@ -139,8 +129,6 @@ async function editTask(i) {
     let title = document.getElementById('editedTask');
     let description = document.getElementById('editedDescription');
     let date = document.getElementById('editedDate');
-
-
     tasks[i] = {
         title: title.value,
         description: description.value,
@@ -155,22 +143,23 @@ async function editTask(i) {
         percentOfDone: tasks[i].percentOfDone,
         pace: tasks[i].pace,
     };
-
     await backend.setItem('tasks', JSON.stringify(tasks))
-    renderTaskCards();
     closeEditCard()
 }
+
 
 /**closes edit card */
 function closeEditCard() {
     document.getElementById('dialogFullCard').classList.add('displayNone')
     document.getElementById('dialogEditCard').classList.add('displayNone')
+    reassignContactsOnEdit = false
+    renderTaskCards();
 }
+
 
 /**defines the dragged div */
 function startDragging(i) {
     currentDragged = i
-
 }
 
 
@@ -178,7 +167,6 @@ function startDragging(i) {
 async function moveTo(readinessState) {
     tasks = JSON.parse(await backend.getItem('tasks'))
     tasks[currentDragged].readinessState = readinessState
-
     await backend.setItem('tasks', JSON.stringify(tasks))
     renderTaskCards()
 }
@@ -190,6 +178,7 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
+
 /**returns in lower case the entered value */
 function filterTasks() {
     let search = document.getElementById('findATask').value
@@ -199,30 +188,23 @@ function filterTasks() {
 
 
 /**sorts the tasks */
-function checkForReadiness(i, j) {
-    if (tasks[i].readinessState == 'toDo') {
-        document.getElementById('boardSubsectionToDo').innerHTML += HTMLrenderTaskCards(i, j)
-        priorityImageForRenderTaskCards(i, j)
-    }
-    if (tasks[i].readinessState == 'inProgress') {
-        document.getElementById('boardSubsectionInProgress').innerHTML += HTMLrenderTaskCards(i, j)
-        priorityImageForRenderTaskCards(i, j)
-    }
-    if (tasks[i].readinessState == 'awaitingFeedback') {
-        document.getElementById('boardSubsectionFeedback').innerHTML += HTMLrenderTaskCards(i, j)
-        priorityImageForRenderTaskCards(i, j)
-    }
-    if (tasks[i].readinessState == 'done') {
-        document.getElementById('boardSubsectionDone').innerHTML += HTMLrenderTaskCards(i, j)
-        priorityImageForRenderTaskCards(i, j)
+function capitalizeFirstLetter(string) {
+    if (string !== undefined) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }
 
 
+function checkForReadiness(i, j, readinessState) {
+    let stringWithFirstLetterCapitalized = capitalizeFirstLetter(readinessState);
+    let id = 'boardSubsection' + stringWithFirstLetterCapitalized;
+    document.getElementById(id).innerHTML += HTMLrenderTaskCards(i, j);
+    priorityImageForRenderTaskCards(i, `urgencyBoard${j}`, prioImages[0], prioImages[1], prioImages[2]);
+}
+
+
 function openTask() {
-
     document.getElementById('dialogFullCard').classList.remove('displayNone')
-
 }
 
 
@@ -258,26 +240,6 @@ async function countSubtasks(i, j) {
 function countsPercentOfDoneForBarOnBoard(i) {
     let addedSubtaskCheckboxes = document.getElementsByClassName('addedSubtaskOnEdit')
     return percentOfDone = tasks[i].pace / addedSubtaskCheckboxes.length * 100
-}
-
-
-
-/**If edit task card open, listenes to clicks on reassign contacts div to open it */
-function listenToEvent(i) {
-    let entireEditTaskCard = document.getElementById('entireEditTaskCard');
-    if (entireEditTaskCard) {
-        entireEditTaskCard.addEventListener('mouseenter', function () {
-            let contactList = document.getElementById('reassignContacts');
-            let dropdownAddContact = document.getElementById('editedDropdownAddContact');
-            contactList.addEventListener('mouseenter', function () {
-                dropdownAddContact.innerHTML = ''
-                contacts.forEach((contact, index) => {
-                    dropdownAddContact.innerHTML += `<div class="droppedContacts"><a>${contact.name}</a><input onclick="addDeleteReassignedContacts(${i},${index})" id="checkboxAssigned${index}"  type="checkbox"></div>`;
-                });
-                checkForCheckedAssigned()
-            });
-        });
-    }
 }
 
 
@@ -359,34 +321,9 @@ function openChangeStatusContent(i) {
 }
 
 
-
-/**sets readiness state InProgress*/
-async function statusInProgress(i) {
-    tasks[i].readinessState = "inProgress"
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    renderTaskCards(i)
-}
-
-
-/**sets readiness state AwaitingFeedback*/
-async function statusAwaitingFeedback(i) {
-    tasks[i].readinessState = "awaitingFeedback"
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    renderTaskCards(i)
-}
-
-
-/**sets readiness state Done*/
-async function statusDone(i) {
-    tasks[i].readinessState = "done"
-    await backend.setItem('tasks', JSON.stringify(tasks))
-    renderTaskCards(i)
-}
-
-
 /**sets readiness state toDo*/
-async function statusToDo(i) {
-    tasks[i].readinessState = "toDo"
+async function setStatus(i, status) {
+    tasks[i].readinessState = status
     await backend.setItem('tasks', JSON.stringify(tasks))
     renderTaskCards(i)
 }
@@ -394,27 +331,58 @@ async function statusToDo(i) {
 
 /**colors the chosen priority button */
 function colorPriosForEditTask(i) {
-    let selectedUrgency = checkForPrioOnEditTask()
+    let selectedUrgency = checkForPrioOnEditTask(i)
+    ifSelectedUrgencyUrgent(selectedUrgency)
+    ifSelectedUrgencyMedium(selectedUrgency)
+    ifSelectedUrgencyLow(selectedUrgency)
+}
+
+
+/**returns selected urgency for task */
+function checkForPrioOnEditTask(i) {
+    let selectedUrgency = tasks[i].prio
+    return selectedUrgency
+}
+
+
+function ifSelectedUrgencyUrgent(selectedUrgency) {
     if (selectedUrgency == 'urgent') {
         document.getElementById("prio" + 4).src = "./assets/img/urgentOnclick.png";
         document.getElementById("prio" + 5).src = "./assets/img/mediumImg.png";
         document.getElementById("prio" + 6).src = "./assets/img/lowImg.png";
     }
+}
+
+
+function ifSelectedUrgencyMedium(selectedUrgency) {
     if (selectedUrgency == 'medium') {
         document.getElementById("prio" + 5).src = "./assets/img/mediumOnclick.png"
         document.getElementById("prio" + 4).src = "./assets/img/urgentImg.png"
         document.getElementById("prio" + 6).src = "./assets/img/lowImg.png"
     }
+}
+
+
+function ifSelectedUrgencyLow(selectedUrgency) {
     if (selectedUrgency == 'low') {
         document.getElementById("prio" + 6).src = "./assets/img/lowOnclick.png"
         document.getElementById("prio" + 4).src = "./assets/img/urgentImg.png"
         document.getElementById("prio" + 5).src = "./assets/img/mediumImg.png"
     }
+}
 
 
-    /**returns selected urgency for task */
-    function checkForPrioOnEditTask(selectedUrgency) {
-        selectedUrgency = tasks[i].prio
-        return selectedUrgency
-    }
+/**iterates through contacts checking if emails in contacts and assigned contacts match */
+function checkIfContactNotDeleted(index) {
+    tasks[index].assignedTo.forEach((assigned, i) => {
+        let match = contacts.find(contact => { return assigned.email === contact.email })
+        if (match) {
+            return true
+        } else {
+            tasks[index].assignedTo.splice(i, 1)
+        }
+        if (!match) {
+            backend.setItem('tasks', JSON.stringify(tasks))
+        }
+    })
 }

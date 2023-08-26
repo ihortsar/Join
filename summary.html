@@ -27,7 +27,7 @@
         </div>
 
         <div class="summary-board" id="section">
-            
+
             <div class="top-board">
                 <a href="board.html" class="task box-shadow">
                     <h2 id="tasksInBoard">0</h2>
@@ -61,8 +61,8 @@
             </div>
 
             <div class="bottom-board">
-                <a id="to-do-container" class="to-do box-shadow" onmouseover="hoverTodoOn()" onmouseout="hoverOff()"
-                    href="board.html">
+                <a id="to-do-container" class="to-do box-shadow"
+                    onmouseover="hoverTaskSection('todo-icon','todo-number')" onmouseout="hoverOff()" href="board.html">
                     <img src="assets/img/todo-icon.png" id="todo-icon">
                     <div class="todo-inner-container">
                         <h2 id="todo-number">0</h2>
@@ -70,8 +70,8 @@
                     </div>
                 </a>
 
-                <a id="done-container" class="done box-shadow" onmouseover="hoverDoneOn()" onmouseout="hoverOff()"
-                    href="board.html">
+                <a id="done-container" class="done box-shadow" onmouseover="hoverTaskSection('done-icon','done-number')"
+                    onmouseout="hoverOff()" href="board.html">
                     <img src="assets/img/done-icon.png" id="done-icon">
                     <div class="done-inner-container">
                         <h2 id="done-number">0</h2>
@@ -85,8 +85,8 @@
 
     <div id="welcomingSummary">
         <div id="welcomeGreeting">
-                <h3 id="greeting"></h3>
-                <h4 id="greetUser"></h4>
+            <h3 id="greeting"></h3>
+            <h4 id="greetUser"></h4>
         </div>
     </div>
 </body>

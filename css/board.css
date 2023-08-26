@@ -26,7 +26,6 @@ body {
 
 .boardHeader h1 {
     font-size: 61px;
-
 }
 
 h2 {
@@ -55,7 +54,7 @@ h4 {
     display: flex;
     align-items: center;
     position: relative;
-  
+
 }
 
 .boardInput {
@@ -262,7 +261,7 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-
+    height: fit-content;
 }
 
 .wrapperDialog h1 {
@@ -415,12 +414,6 @@ h4 {
     margin: auto;
 }
 
-
-.inputPopUp {
-    width: 50% !important;
-    padding: 6px !important
-}
-
 .inputEdit {
     width: 80% !important
 }
@@ -475,11 +468,11 @@ textarea {
 
 }
 
-.dropdownEditTask:hover .dropdown-content {
+/* .dropdownEditTask:hover .dropdown-content {
     display: block;
     border-top: none;
 }
-
+ */
 
 .dropdown-content {
     width: 100% !important;
@@ -590,7 +583,20 @@ label:hover {
 
 }
 
+
+@media(min-width:250px) and (max-width:1129px) {
+    .dialogFullCard {
+
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 66px;
+    }
+}
+
 @media(min-width:250px) and (max-width:1000px) {
+
+
     .editDelete {
         margin-bottom: 40%
     }
@@ -613,6 +619,10 @@ label:hover {
         content: inherit
     }
 
+    .boardHeader h1 {
+        font-size: 36px;
+        margin-top: 60px;
+    }
 
     h1 {
         text-align: left !important;
@@ -712,21 +722,18 @@ label:hover {
     }
 
     .dialogFullCardContent {
-        height: 100%;
         width: 100%;
         border-radius: 0;
-
+        overflow-y: scroll;
     }
 
     .wrapperDialog {
-        height: 100vh;
-        padding-top: 10%;
+        height: fit-content;
         width: 60%;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        margin-top: 10px;
-        margin-bottom: 80px;
+
 
     }
 
@@ -752,13 +759,12 @@ label:hover {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        margin-bottom: 70px;
-        margin-top: 100px;
+        height: auto
     }
 
 }
 
-@media(max-width:350px) {
+@media(max-width:400px) {
     .closeButtondialogFullCard {
         top: 2%;
         height: 15px
@@ -769,6 +775,10 @@ label:hover {
         width: 90%
     }
 
+    /*   .wrapperDialog {
+        padding-top: 100px;
+        padding-bottom: 125px;
+    } */
 
 }
 
@@ -783,14 +793,9 @@ label:hover {
         margin-top: 45px;
     }
 
-    .wrapperDialog {
-        margin-top: 10px;
-    }
-
     .boardEditTaskForm {
-
         margin-bottom: 90px;
-        margin-top: 100px;
+
     }
 }
 
@@ -825,7 +830,7 @@ label:hover {
     }
 
     .searchImgInput {
-        right: 46%
+        right: 42%
     }
 }
 

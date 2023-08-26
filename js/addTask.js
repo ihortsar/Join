@@ -15,9 +15,10 @@ let date = new Date();
 let displayedCategories = [];
 let existingCategoryToAddToTask
 let existingColorCategoryToAddToTask
-let readinessState
+let readinessState = 'toDo'
 let assignedFlag = false
 let assignedTo
+
 
 
 async function initAddTask() {
@@ -29,7 +30,6 @@ async function initAddTask() {
         contacts = JSON.parse(backend.getItem('contacts')) || [];
         document.getElementById("date").setAttribute("min", date.toISOString().split("T")[0])
         displayExistingCategories()
-        contactList('dropdownAddContact')
     } catch (er) {
         console.error(er)
     }
@@ -68,6 +68,8 @@ async function addToTasks() {
     manageCategories(task, category, colorsCategory)
     await whenAllRequiredFilled(task)
 }
+
+
 
 
 /**checks if task.prio && task.category are filled, pushes the task, inables the button,saves it on server */
@@ -128,6 +130,7 @@ function signalRequiredCategory() {
 }
 
 
+/** draws red border if required contact not set*/
 function signalRequiredContact() {
     document.getElementById('dropdownAssigned').classList.add('fillRequired')
     setTimeout(() => {
@@ -163,16 +166,31 @@ function addPriority(i) {
 
 /**checks selectedUrgency parameter and colors the corresponding image */
 function colorPrios(selectedUrgency, i) {
+    selectedUrgencyCheckUrgent(selectedUrgency, i)
+    selectedUrgencyCheckMedium(selectedUrgency, i)
+    selectedUrgencyCheckLow(selectedUrgency, i)
+}
+
+
+function selectedUrgencyCheckUrgent(selectedUrgency, i) {
     if (selectedUrgency == 'urgent') {
         document.getElementById("prio" + i).src = "./assets/img/urgentOnclick.png";
         document.getElementById("prio" + 2).src = "./assets/img/mediumImg.png";
         document.getElementById("prio" + 3).src = "./assets/img/lowImg.png";
     }
+}
+
+
+function selectedUrgencyCheckMedium(selectedUrgency, i) {
     if (selectedUrgency == 'medium') {
         document.getElementById("prio" + i).src = "./assets/img/mediumOnclick.png"
         document.getElementById("prio" + 1).src = "./assets/img/urgentImg.png"
         document.getElementById("prio" + 3).src = "./assets/img/lowImg.png"
     }
+}
+
+
+function selectedUrgencyCheckLow(selectedUrgency, i) {
     if (selectedUrgency == 'low') {
         document.getElementById("prio" + i).src = "./assets/img/lowOnclick.png"
         document.getElementById("prio" + 1).src = "./assets/img/urgentImg.png"
@@ -217,6 +235,7 @@ function openInputAddCategory() {
 }
 
 
+/**adds category to task*/
 function addCategoryOnTask() {
     let value = document.getElementById('selectedCategoryInputValue').value;
     if (value) {
@@ -226,7 +245,7 @@ function addCategoryOnTask() {
           <div class="colorPicker colorPickerAssigned" style="background-color: ${colorsCategory}"  id="assignedColor"></div>
          </div>` ;
         document.getElementById('hiddenInputCategory').classList.add('displayNone')
-        document.getElementById('dropdownCategory').style = 'none'
+        document.getElementById('dropdownCategory').style.display = 'none'
     }
 }
 
@@ -256,7 +275,7 @@ function openInputAddContact() {
 
 /**checks if the name of contact in contacts was changed*/
 async function checkIfTheContactNameChanged(i, contact) {
-    const filteredContacts = contacts.filter(maincontact => {
+    let filteredContacts = contacts.filter(maincontact => {
         return maincontact.email === tasks[i].assignedTo[contact].email;
     });
 
@@ -268,3 +287,5 @@ async function checkIfTheContactNameChanged(i, contact) {
         await backend.setItem('tasks', JSON.stringify(tasks))
     }
 }
+
+

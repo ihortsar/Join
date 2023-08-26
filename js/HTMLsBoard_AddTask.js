@@ -83,7 +83,7 @@ function HTMLrenderSubtasksDialogFullCard(i, subtask, counter) {
 
 function openEditTaskHTML(i) {
 
-    return `<div id="entireEditTaskCard" class="dialogFullCardContent formDiv"
+    return `<div id="entireEditTaskCard" class="dialogFullCardContent"
         style="display:flex; justify-content: center !important; align-items: center;">
         <form class="boardEditTaskForm" onsubmit="editTask(${i}); return false;">
             <div class="formDiv">
@@ -118,8 +118,8 @@ function openEditTaskHTML(i) {
 
             <div class="AssignedTo formDiv" style="padding:6px;"> <!--Assigned to container-->
                 <label>Assigned to</label>
-                <div id="reassignContacts" class="dropdownEditTask">
-                    <div  class="headerForSelectionField">
+                <div  id="reassignContacts" class="dropdownEditTask">
+                    <div onclick="listenToEvent(${i})" class="headerForSelectionField">
                         <span style="position: relative;">Reassign contacts</span>
                         <img class="arrDown" src="./assets/img/arrDown.png">
                         <div>
@@ -150,9 +150,9 @@ function ifStatusToDoForMobile(i) {
     if (tasks[i].readinessState === "toDo") {
         statuses.innerHTML = ''
         statuses.innerHTML += `<div id="statusesDropdown${i}" class="statusesDropdown">
-        <p onclick="statusInProgress(${i})">In Progress</p>
-        <p onclick="statusAwaitingFeedback(${i})">Awaiting Feedback</p>
-        <p onclick="statusDone(${i})">Done</p>
+        <p onclick="setStatus(${i},'inProgress')">In Progress</p>
+        <p onclick="setStatus(${i},'awaitingFeedback')">Awaiting Feedback</p>
+        <p onclick="setStatus(${i},'done')">Done</p>
         </div>`
     }
 }
@@ -164,9 +164,9 @@ function ifStatusInProgressForMobile(i) {
     if (tasks[i].readinessState === "inProgress") {
         statuses.innerHTML = ''
         statuses.innerHTML += `<div id="statusesDropdown${i}" class="statusesDropdown">
-        <p onclick="statusToDo(${i})">To Do</p>
-        <p onclick="statusAwaitingFeedback(${i})">Awaiting Feedback</p>
-        <p onclick="statusDone(${i})">Done</p>
+        <p onclick="setStatus(${i},'toDo')">To Do</p>
+        <p onclick="setStatus(${i},'awaitingFeedback')">Awaiting Feedback</p>
+        <p onclick="setStatus(${i},'done')">Done</p>
         </div>`
     }
 }
@@ -178,9 +178,9 @@ function ifStatusAwaitingFeedbackForMobile(i) {
     if (tasks[i].readinessState === "awaitingFeedback") {
         statuses.innerHTML = ''
         statuses.innerHTML += `<div id="statusesDropdown${i}" class="statusesDropdown">
-        <p onclick="statusToDo(${i})">To Do</p>
-        <p onclick="statusInProgress(${i})">In Progress</p>
-        <p onclick="statusDone(${i})">Done</p>
+        <p onclick="setStatus(${i},'toDo')">To Do</p>
+        <p onclick="setStatus(${i},'inProgress')">In Progress</p>
+        <p onclick="setStatus(${i},'done')">Done</p>
         </div>`
     }
 }
@@ -192,9 +192,9 @@ function ifStatusDoneForMobile(i) {
     if (tasks[i].readinessState === "done") {
         statuses.innerHTML = ''
         statuses.innerHTML += `<div id="statusesDropdown${i}" class="statusesDropdown">
-        <p onclick="statusToDo(${i})">To Do</p>
-        <p onclick="statusInProgress(${i})">In Progress</p>
-        <p onclick="statusAwaitingFeedback(${i})">Awaiting Feedback</p>
+        <p onclick="setStatus(${i},'toDo')">To Do</p>
+        <p onclick="setStatus(${i}, 'inProgress')">In Progress</p>
+        <p onclick="setStatus(${i},'awaitingFeedback')">Awaiting Feedback</p>
         </div>
         `
     }
@@ -222,31 +222,3 @@ function HTMLforExistingCategories(task) {
     <div class="colorPicker colorPickerAssigned" style="background-color: ${task.colorCategory}; margin-bottom: 0 "></div>
 </div>`;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

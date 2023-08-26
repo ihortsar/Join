@@ -192,10 +192,10 @@ input {
 }
 
 
-.dropdown:hover .dropdown-content {
+/* .dropdown:hover .dropdown-content {
     display: block;
     border-top: none;
-}
+} */
 
 .dropdownAssigned:hover .dropdown-content {
     display: block;
@@ -283,9 +283,20 @@ hr {
     right: 5%
 }
 
+.addSubtaskButton:hover {
+    cursor: pointer;
+}
+
 .addSubTask {
     position: relative;
 
+}
+
+#date:hover::-webkit-calendar-picker-indicator,
+#date:hover::-webkit-inner-spin-button,
+#date:hover::-webkit-clear-button {
+    filter: invert(50%);
+    cursor: pointer;
 }
 
 .buttonsCreateTask {
@@ -451,9 +462,11 @@ hr {
 
 
     h1 {
-        text-align: center;
         margin-top: 20%;
-        font-size: 30px;
+        font-size: 36px;
+        flex-grow: 1;
+        text-align: left;
+        margin-left: 8%;
     }
 
     .wrapper {
@@ -516,19 +529,19 @@ hr {
         right: 7%
     }
 
-    .buttonsCreateTask {
-        margin: 0;
-
-        justify-content: center;
+    .addSubTask {
+        margin-bottom: 0 !important
     }
 
     .buttonsCreateTask {
+        margin: 0;
+        justify-content: flex-end;
+        margin-top: -80px;
         margin-bottom: 30% !important;
     }
 
-
     .droppedContacts input {
-        left: 40%
+        left: 24%
     }
 
     .dividingHR {
@@ -584,7 +597,7 @@ hr {
 
 }
 
-@media(min-width:800px) and (max-width:1000px) {
+@media(min-width:800px) and (max-width:1130px) {
     .wrapper {
         width: 100%;
         height: 100vh;
@@ -593,7 +606,10 @@ hr {
     }
 
     h1 {
-        text-align: center;
+        margin-top: 10%;
+        flex-grow: 1;
+        text-align: left;
+        margin-left: 8%;
     }
 
     .content {
@@ -710,7 +726,9 @@ hr {
 
 @media(min-width:1000px)and (max-width:1300px) {
     h1 {
-        margin-left: 30px;
+        flex-grow: 1;
+        text-align: left;
+        margin-left: 8%;
     }
 
     .addSubtaskButton {
@@ -734,10 +752,6 @@ hr {
         width: inherit
     }
 
-    .dropdownAssigned {
-        width: 70%
-    }
-
     .content {
         margin: 0
     }
@@ -755,11 +769,15 @@ hr {
     }
 
     .droppedContacts input {
-        left: 50%;
+        left: 80%;
     }
 
     .dropdown-content a {
         width: 70%
+    }
+
+    .buttonsCreateTask {
+        margin: 0 90px 90px 30px
     }
 
 }
@@ -772,5 +790,13 @@ hr {
 
     .addSubtaskButton {
         right: 0
+    }
+}
+
+@media(max-width:1200px) {
+    h1 {
+        margin-left: 10%;
+        flex-grow: 1;
+        text-align: left;
     }
 }

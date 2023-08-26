@@ -10,15 +10,31 @@ function renderSubtasksOnPopUpAddTask() {
 
 
 function openPopUpAddTask(state) {
-    contactList('dropdownAddContactPopUp')
     readinessState = state
     document.getElementById('addTaskPopUp').classList.add('openPopUp')
     document.getElementById(`date`).setAttribute("min", date.toISOString().split("T")[0]);
+    listenAddTaskPopUp()
 }
 
 
 function closePopUpAddTask() {
+    reassignContactsOnEdit = false
     document.getElementById('addTaskPopUp').classList.remove('openPopUp')
+    document.getElementById('dropdownAddContactPopUp').style.display = 'none'
+    document.getElementById('dropdownCategory').style.display = 'none'
+}
+
+
+function openCategories(id) {
+    let droppedCategories = document.getElementById(id)
+    if (droppedCategories.style.display === 'none') {
+        droppedCategories.style.display = 'block'
+    } else { droppedCategories.style.display = 'none' }
+}
+
+
+function stopPropagation(event) {
+    event.stopPropagation();
 }
 
 
@@ -132,7 +148,7 @@ function contactList(id) {
 function displayExistingCategories() {
     const dropdownCategory = document.getElementById('dropdownCategory');
     dropdownCategory.innerHTML = '';
-    dropdownCategory.innerHTML = '<a onclick="openInputAddCategory()" href="#">Add category</a>';
+    dropdownCategory.innerHTML = '<a onclick="openInputAddCategory();stopPropagation(event)" href="#">Add category</a>';
 
     for (let i = 0; i < tasks.length; i++) {
         let task = tasks[i];
@@ -160,6 +176,8 @@ function displayAddedCategoryFromSaved(category, colorCategory) {
 function clearSubsections() {
     document.getElementById('boardSubsectionToDo').innerHTML = ''
     document.getElementById('boardSubsectionInProgress').innerHTML = ''
-    document.getElementById('boardSubsectionFeedback').innerHTML = ''
+    document.getElementById('boardSubsectionAwaitingFeedback').innerHTML = ''
     document.getElementById('boardSubsectionDone').innerHTML = ''
 }
+
+

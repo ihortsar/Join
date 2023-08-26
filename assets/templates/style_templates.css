@@ -198,7 +198,7 @@ a {
     text-decoration: underline;
 }
 
-@media(max-width:1000px) {
+@media(max-width:1130px) {
     header {
         position: fixed;
         top: 0;

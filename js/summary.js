@@ -44,20 +44,27 @@ async function getUsers() {
 function getTime() {
     let loignBtnClick = localStorage.getItem('LoginBtn');
     if (loignBtnClick == 'true') {
-        let currentTime = new Date();
-        let hour = currentTime.getHours();
-        let greeting = document.getElementById('greeting');
-
-        if (hour >= 1 && hour < 12) {
-            greeting.innerHTML = "Good morning";
-        } else if (hour >= 12 && hour < 18) {
-            greeting.innerHTML = "Welcome";
-        } else {
-            greeting.innerHTML = "Good evening";
-        }
+        checkTime()
         greetUser();
     } else {
         document.getElementById('welcomingSummary').classList.add('d-none');
+    }
+}
+
+
+/**
+ * checks current time
+ */
+function checkTime() {
+    let currentTime = new Date();
+    let hour = currentTime.getHours();
+    let greeting = document.getElementById('greeting');
+    if (hour >= 1 && hour < 12) {
+        greeting.innerHTML = "Good morning";
+    } else if (hour >= 12 && hour < 18) {
+        greeting.innerHTML = "Welcome";
+    } else {
+        greeting.innerHTML = "Good evening";
     }
 }
 
@@ -115,21 +122,13 @@ function returnCheckboxFeedback() {
 }
 
 
-/**
- * This function adds a hover effect on the 'todo' Container.
- */
-function hoverTodoOn() {
-    document.getElementById('todo-icon').style = "filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(280deg) brightness(104%) contrast(104%);";
-    document.getElementById('todo-number').style.color = "white";
-}
-
 
 /**
- * This function adds a hover effect on the 'done' Container.
+ * Adds a hover effect on Task sections.
  */
-function hoverDoneOn() {
-    document.getElementById('done-icon').style = "filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(280deg) brightness(104%) contrast(104%);";
-    document.getElementById('done-number').style.color = "white";
+function hoverTaskSection(idIcon, idNumber) {
+    document.getElementById(idIcon).style = "filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(280deg) brightness(104%) contrast(104%);";
+    document.getElementById(idNumber).style.color = "white";
 }
 
 

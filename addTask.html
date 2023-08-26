@@ -48,12 +48,14 @@
                             <div class="categoryContainer"> <!--Category container-->
                                 <label>Category</label>
 
-                                <div id="categoryDropdown" class="dropdown">
+                                <div onclick="openCategories('dropdownCategory')"  id="categoryDropdown"
+                                    class="dropdown">
                                     <div class="headerForSelectionField">
                                         <label id="labelCategory">Select task category</label>
                                         <img class="arrDown" src="./assets/img/arrDown.png">
                                         <!--Hidden input category-->
-                                        <div id="hiddenInputCategory" class="hiddenInput displayNone">
+                                        <div id="hiddenInputCategory" onclick="stopPropagation(event)"
+                                            class="hiddenInput displayNone">
 
                                             <input class="selectedCategoryInputValue" maxlength="30"
                                                 id="selectedCategoryInputValue" placeholder="Category name">
@@ -80,7 +82,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="dropdownCategory" class="dropdown-content">
+                                    <div id="dropdownCategory" style="display: none;" class="dropdown-content">
 
                                     </div>
                                 </div>
@@ -99,7 +101,7 @@
                                         </div>
 
                                     </div>
-                                    <div id="dropdownAddContact" class="dropdown-content">
+                                    <div id="dropdownAddContact" style="display:none;" class="dropdown-content">
 
 
                                     </div>

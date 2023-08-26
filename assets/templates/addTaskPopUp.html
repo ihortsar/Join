@@ -1,5 +1,5 @@
 <div id="addTaskPopUp" class="wrapperPopUpTask">
-    <div class="contentPopUpTask">
+    <div id="addTaskPopUpContent" class="contentPopUpTask">
         <div class="taskPopUpHeader">
             <h1>Add Task</h1>
             <img onclick="closePopUpAddTask()" class="closePopUp" src="./assets/img/closeButtonBoard.png">
@@ -23,14 +23,15 @@
                 <div class="categoryContainer formDiv"> <!--Category container-->
                     <label>Category</label>
 
-                    <div id="categoryDropdown" class="dropdown formDiv">
-                        <div class="headerForSelectionField">
+                    <div id="categoryDropdown" class="dropdown formDiv positionAbsolute100">
+                        <div onclick="openCategories('dropdownCategory')" class="headerForSelectionField formDiv">
                             <label id="labelCategory">Select task category</label>
                             <img class="arrDown" src="./assets/img/arrDown.png">
                             <!--Hidden input category-->
-                            <div id="hiddenInputCategory" class="hiddenInput displayNone">
+                            <div onclick="stopPropagation(event)" id="hiddenInputCategory"
+                                class="hiddenInput displayNone formDiv">
 
-                                <input class="inputPopUp" id="selectedCategoryInputValue" style="position: relative;"
+                                <input class="inputPopUp  inputOfCategory" id="selectedCategoryInputValue"
                                     placeholder="New category name">
                                 <img onclick="closeHiddenInput()" class="closeHiddenInput"
                                     src="./assets/img/closeButtonBoard.png">
@@ -39,7 +40,7 @@
                                     src="./assets/img/check.png">
 
 
-                                <div class="colorPickers">
+                                <div class="colorPickers formDiv">
                                     <div onclick="addCategoryColorOnTask(1)" id="color1" class="colorPicker"
                                         style="background-color:#8AA4FF;"></div>
                                     <div onclick="addCategoryColorOnTask(2)" id="color2" class="colorPicker"
@@ -55,8 +56,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="dropdownCategory" class="dropdown-content formDiv">
-                            <a onclick="openInputAddCategory()" href="#">Add category</a>
+                        <div id="dropdownCategory" style="display: none;" class="dropdown-content ">
+                            <a onclick="openInputAddCategory(event); stopPropagation(event)" href="#">Add category</a>
                         </div>
                     </div>
                 </div>
@@ -74,7 +75,7 @@
                             </div>
 
                         </div>
-                        <div id="dropdownAddContactPopUp" class="dropdown-content formDiv">
+                        <div id="dropdownAddContactPopUp" style="display: none;" class="dropdown-content">
 
                         </div>
                     </div>
@@ -90,9 +91,9 @@
                     <input class="inputPopUp" type="date" id="date" required />
                 </div>
 
-                <div class="prioPopUp formDiv">
+                <div class="formDiv">
                     <label>Prio</label>
-                    <div id="priorities" class="prioritiesPopUpTask">
+                    <div id="priorities" class="prioritiesPopUpTask inputPopUp" style="border: none;">
                         <img id="prio1" value="urgent" onclick="addPriority(1)" class="priorityImg"
                             src="./assets/img/urgentImg.png">
                         <img id="prio2" value="medium" onclick="addPriority(2)" class="priorityImg"

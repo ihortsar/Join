@@ -13,6 +13,7 @@ async function initContacts() {
     await loadContacts();
     letters = [];
     sortContacts();
+    tasks = await JSON.parse(await backend.getItem('tasks')) || []
 }
 
 /**
@@ -295,7 +296,7 @@ function clearInput() {
 async function showContacts(l) {
     let contactsInfo = document.getElementById('contactInfo');
     contactsInfo.innerHTML = memberInfo(l);
-
+    displayExistingCategories()
     contactsInfo.style.display = "flex";
 
     let contactContainer = document.querySelector(".contact-container");

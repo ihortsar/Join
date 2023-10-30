@@ -8,12 +8,12 @@ let letters = [];
  */
 async function initContacts() {
     await initScript();
-    setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master");
-    await downloadFromServer();
+ /*    setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master"); 
+    await downloadFromServer();*/
     await loadContacts();
     letters = [];
     sortContacts();
-    tasks = await JSON.parse(await backend.getItem('tasks')) || []
+    tasks = await JSON.parse(await getItem('tasks')) || []
 }
 
 /**
@@ -21,7 +21,7 @@ async function initContacts() {
  */
 async function loadContacts() {
     try {
-        contacts = JSON.parse(await backend.getItem('contacts')) || [];
+        contacts = JSON.parse(await getItem('contacts')) || [];
     } catch (e) {
         console.error('Loading error:', e);
     }
@@ -43,7 +43,7 @@ async function sortContacts() {
         }
         return 0;
     });
-    await backend.setItem('contacts', JSON.stringify(contacts));
+    await setItem('contacts', JSON.stringify(contacts));
     loadInitialLetters();
 }
 
@@ -177,7 +177,7 @@ async function deleteNewContact(l) {
     document.getElementById('overlayContainer').classList.add('d-none');
     clearContactCard();
     editing = false;
-    await backend.setItem('contacts', JSON.stringify(contacts));
+    await setItem('contacts', JSON.stringify(contacts));
     document.getElementById('contactInfo').innerHTML = '';
     initContacts();
 
@@ -205,7 +205,7 @@ async function addContact() {
         "lastNameLetter": lastName,
     });
     contactCreatedSuccessfuly();
-    await backend.setItem('contacts', JSON.stringify(contacts));
+    await setItem('contacts', JSON.stringify(contacts));
     clearInput();
     document.getElementById('contactList').innerHTML = '';
     clearContactCard();
@@ -254,7 +254,7 @@ async function editContact(l) {
     contacts[l].firstNameLetter = editedFirstName;
     contacts[l].lastNameLetter = editedLastName;
 
-    await backend.setItem('contacts', JSON.stringify(contacts));
+    await setItem('contacts', JSON.stringify(contacts));
     clearEditContacCard();
     showContacts(l);
     initContacts();

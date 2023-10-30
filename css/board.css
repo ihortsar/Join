@@ -16,6 +16,7 @@ body {
     width: calc(100% - 232px);
     box-sizing: border-box;
     overflow-x: hidden;
+
 }
 
 .boardContent {
@@ -343,7 +344,7 @@ h4 {
 
 .assignedToAvatars {
     display: flex;
-
+    flex-wrap: wrap;
 }
 
 
@@ -594,7 +595,29 @@ label:hover {
     }
 }
 
-@media(min-width:250px) and (max-width:1000px) {
+@media(min-width:250px) and (max-width:1150px) {
+    .wrapper {
+        margin-bottom: 0;
+        margin-top: 50px;
+    }
+
+    .boardHeader {
+        height: 183px;
+    }
+}
+
+@media(max-width:600px) {
+    .searchImgInput {
+        right: 23%
+    }
+}
+@media(min-width:600px) and (max-width:1130px) {
+    .searchImgInput {
+        right: 34%
+    }
+}
+
+@media(min-width:250px) and (max-width:1130px) {
 
 
     .editDelete {
@@ -632,6 +655,7 @@ label:hover {
         display: flex;
         align-items: center;
         margin: auto;
+        margin-top: 15%;
     }
 
     .boardHeader {
@@ -652,7 +676,7 @@ label:hover {
     }
 
     .boardInput {
-        width: 100% !important;
+        width: 100%;
         margin: auto;
     }
 
@@ -717,9 +741,6 @@ label:hover {
         right: 130px;
     }
 
-    .searchImgInput {
-        right: 20%
-    }
 
     .dialogFullCardContent {
         width: 100%;
@@ -799,6 +820,12 @@ label:hover {
     }
 }
 
+@media(min-width:600px) and (max-width:1130px) {
+    .boardInput {
+        width: 50%
+    }
+}
+
 @media(min-width:1000px) and (max-width:1450px) {
     .boardSubsectionHeader h2 {
         margin-right: 15%;
@@ -826,11 +853,7 @@ label:hover {
     }
 
     .addTaskButton {
-        width: 50%;
-    }
-
-    .searchImgInput {
-        right: 42%
+        width: fit-content;
     }
 }
 

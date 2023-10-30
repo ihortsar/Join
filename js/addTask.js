@@ -24,12 +24,11 @@ let assignedTo
 async function initAddTask() {
     initScript();
     try {
-        setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master");
-        await downloadFromServer();
-        tasks = await JSON.parse(await backend.getItem('tasks')) || []
-        contacts = JSON.parse(backend.getItem('contacts')) || [];
+        tasks = JSON.parse(await getItem('tasks')) || []
+        contacts = JSON.parse(await getItem('contacts')) || [];
         document.getElementById("date").setAttribute("min", date.toISOString().split("T")[0])
         displayExistingCategories()
+        /*     console.log(tasks); */
     } catch (er) {
         console.error(er)
     }
@@ -78,7 +77,7 @@ async function whenAllRequiredFilled(task) {
         task.assignedTo = assignedContacts.splice(0, assignedContacts.length)
         tasks.push(task);
         disableButtonAddTask()
-        await backend.setItem('tasks', JSON.stringify(tasks))
+        await setItem('tasks', JSON.stringify(tasks))
         popTheAddedDesk()
         setTimeout(function () { window.location.href = 'board.html'; }, 3000)
     } else { conditionsIfRequiredSkipped(task) }
@@ -222,7 +221,7 @@ function deleteSubtask(i) {
 
 async function deleteTask(i) {
     tasks.splice(i, 1);
-    await backend.setItem('tasks', JSON.stringify(tasks))
+    await setItem('tasks', JSON.stringify(tasks))
     renderTaskCards();
     document.getElementById('dialogFullCard').classList.add('displayNone')
 }
@@ -284,7 +283,7 @@ async function checkIfTheContactNameChanged(i, contact) {
         tasks[i].assignedTo[contact].lastNameLetter = filteredContacts[0].lastNameLetter;
     } else {
         tasks[i].assignedTo.splice(1, contact)
-        await backend.setItem('tasks', JSON.stringify(tasks))
+        await setItem('tasks', JSON.stringify(tasks))
     }
 }
 

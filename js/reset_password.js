@@ -16,10 +16,10 @@ async function onPageLoad() {
 /**
  * This function loads the specified variables that are stored in the backend.
  */
-async function setUrl() {
+/* async function setUrl() {
     setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master");
     await downloadFromServer();
-}
+} */
 
 
 /**

@@ -20,9 +20,7 @@ async function onLoad() {
  * This function sets and downlaods the backend url.
  */
 async function setUrl() {
-    setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master");
-    await downloadFromServer();
-    getUsers();
+ getUsers();
 }
 
 
@@ -31,7 +29,7 @@ async function setUrl() {
  */
 async function getUsers() {
     try {
-        joinUsers = JSON.parse(await backend.getItem('joinUsers')) || [];
+        joinUsers = JSON.parse(await getItem('joinUsers')) || [];
     } catch (e) {
         console.error('Loading error:', e);
     }
@@ -147,7 +145,7 @@ function hoverOff() {
  * This function sets saved tasks.
  */
 async function getTasks() {
-    tasks = await JSON.parse(backend.getItem('tasks')) || [];
+    tasks = JSON.parse(await getItem('tasks')) || [];
 
     for (let t = 0; t < tasks.length; t++) {
         const task = tasks[t];
@@ -169,19 +167,19 @@ async function setTaskStates(taskReadinessState) {
     switch (taskReadinessState) {
         case 'toDo':
             toDo.push(taskReadinessState);
-            await backend.setItem('ToDo', JSON.stringify(toDo));
+            await setItem('ToDo', JSON.stringify(toDo));
             break;
         case 'inProgress':
             inProgress.push(taskReadinessState);
-            await backend.setItem('InProgress', JSON.stringify(inProgress));
+            await setItem('InProgress', JSON.stringify(inProgress));
             break;
         case 'awaitingFeedback':
             awaitingFeedback.push(taskReadinessState);
-            await backend.setItem('AwaitingFeedback', JSON.stringify(awaitingFeedback));
+            await setItem('AwaitingFeedback', JSON.stringify(awaitingFeedback));
             break;
         case 'done':
             done.push(taskReadinessState);
-            await backend.setItem('Done', JSON.stringify(done));
+            await setItem('Done', JSON.stringify(done));
             break;
     }
 }
@@ -194,7 +192,7 @@ async function setTaskStates(taskReadinessState) {
 async function setUrgetState(taskPrio) {
     if (taskPrio == 'urgent') {
         urgent.push(taskPrio);
-        await backend.setItem('Urgent', JSON.stringify(taskPrio));
+        await setItem('Urgent', JSON.stringify(taskPrio));
     }
 }
 

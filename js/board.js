@@ -8,10 +8,8 @@ let reassignContactsOnEdit = false
 async function initBoard() {
     await initScript();
     try {
-        setURL("https://ihor-tsarkov.developerakademie.net/Join/smallest_backend_ever-master");
-        await downloadFromServer();
-        tasks = await JSON.parse(await backend.getItem('tasks')) || []
-        contacts = JSON.parse(backend.getItem('contacts')) || [];
+        tasks = JSON.parse(await getItem('tasks')) || []
+        contacts = JSON.parse(await getItem('contacts')) || [];
         renderTaskCards()
         displayExistingCategories()
         listenFullCard()
@@ -125,7 +123,7 @@ function openEditTask(i) {
 
 /**gets the current state of tasks, redefines values for the task,saves them and renders */
 async function editTask(i) {
-    tasks = JSON.parse(await backend.getItem('tasks'))
+    tasks = JSON.parse(await getItem('tasks'))
     let title = document.getElementById('editedTask');
     let description = document.getElementById('editedDescription');
     let date = document.getElementById('editedDate');
@@ -143,7 +141,7 @@ async function editTask(i) {
         percentOfDone: tasks[i].percentOfDone,
         pace: tasks[i].pace,
     };
-    await backend.setItem('tasks', JSON.stringify(tasks))
+    await setItem('tasks', JSON.stringify(tasks))
     closeEditCard()
 }
 
@@ -165,9 +163,9 @@ function startDragging(i) {
 
 /**changes readinessState for the dragged div */
 async function moveTo(readinessState) {
-    tasks = JSON.parse(await backend.getItem('tasks'))
+    tasks = JSON.parse(await getItem('tasks'))
     tasks[currentDragged].readinessState = readinessState
-    await backend.setItem('tasks', JSON.stringify(tasks))
+    await setItem('tasks', JSON.stringify(tasks))
     renderTaskCards()
 }
 
@@ -217,7 +215,7 @@ function closeTask() {
 /** manages subtasks(done, not done and counts the general percent of done. 
  * Pace is used as a flag changing when checkbox clicked from initial 0 to 1 */
 async function countSubtasks(i, j) {
-    tasks = JSON.parse(await backend.getItem('tasks'))
+    tasks = JSON.parse(await getItem('tasks'))
 
     if (tasks[i].subtasks[j].checkedValue == 0 && tasks[i].pace < tasks[i].subtasks.length) {
         tasks[i].pace++
@@ -232,7 +230,7 @@ async function countSubtasks(i, j) {
     colorOfBar = document.getElementById('progressBar' + i).style.background = `linear-gradient(to right, #29ABE2 ${percentOfDone}%, #e9e7e7 ${percentOfDone}%)`;
     tasks[i].colorOfBar = colorOfBar
     tasks[i].percentOfDone = percentOfDone
-    await backend.setItem('tasks', JSON.stringify(tasks))
+    await setItem('tasks', JSON.stringify(tasks))
 }
 
 
@@ -272,7 +270,7 @@ async function addDeleteReassignedContacts(i, index) {
     let checkedbox = document.getElementById(`checkboxAssigned${index}`)
     if (checkedbox.checked == true) { addReassigned(i, index) }
     if (checkedbox.checked == false) { deleteReassigned(i, index) }
-    await backend.setItem('tasks', JSON.stringify(tasks));
+    await setItem('tasks', JSON.stringify(tasks));
 }
 
 
@@ -324,7 +322,7 @@ function openChangeStatusContent(i) {
 /**sets readiness state toDo*/
 async function setStatus(i, status) {
     tasks[i].readinessState = status
-    await backend.setItem('tasks', JSON.stringify(tasks))
+    await setItem('tasks', JSON.stringify(tasks))
     renderTaskCards(i)
 }
 
@@ -382,7 +380,7 @@ function checkIfContactNotDeleted(index) {
             tasks[index].assignedTo.splice(i, 1)
         }
         if (!match) {
-            backend.setItem('tasks', JSON.stringify(tasks))
+            setItem('tasks', JSON.stringify(tasks))
         }
     })
 }
